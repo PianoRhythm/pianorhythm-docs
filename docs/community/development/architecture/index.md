@@ -1,7 +1,7 @@
 ---
 title: Architecture
 id: dev-architecture
-path: ['/development/architecture/']
+path: ['/community/development/architecture/']
 tags:
   - architecture
 ---

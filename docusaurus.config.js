@@ -11,7 +11,7 @@ if (isStaging) PIANORHYTHM_ENV = "staging";
 
 const isDevelopment = !isProduction && !isStaging;
 
-let host = isDevelopment ? "http://localhost:3001" : "https://pianorhythm.io";
+let host = isDevelopment ? "http://localhost" : "https://pianorhythm.io";
 
 const googleAnalytics = {
   trackingID: 'G-HPWMT1LLDW',
@@ -225,15 +225,15 @@ module.exports = async function createConfigAsync() {
               position: 'left',
               to: 'community',
             },
-            {
-              label: "Development",
-              position: 'left',
-              to: 'development',
-            },
-            {
-              type: 'localeDropdown',
-              position: 'right',
-            },
+            // {
+            //   label: "Development",
+            //   position: 'left',
+            //   to: 'development',
+            // },
+            // {
+            //   type: 'localeDropdown',
+            //   position: 'right',
+            // },
             { href: host, label: 'Enter PianoRhythm', position: 'right' },
             { href: "https://staging.pianorhythm.io", label: 'Enter Staging', position: 'right' },
           ].filter(Boolean),

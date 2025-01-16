@@ -27,7 +27,7 @@ The frontend for PianoRhythm is made up of a variety of moving parts and pieces.
 ## Platforms
 
 As of now, there are two primary platforms for the PianoRhythm app: **Web** and **Desktop**.
-The desktop app is the preferred platform since it should offer the most stability and performance. Many of the core components are ran natively in the desktop environment. 
+The desktop app is the preferred platform since it should offer the most stability and performance. Many of the core components are ran natively in the desktop environment.
 
 The web app browser is not too bad but the synthesizer may be limited due to current WebAudio technology. The desktop app actually uses the machine's native audio driver for rendering audio.
 

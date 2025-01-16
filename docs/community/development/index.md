@@ -1,8 +1,6 @@
 ---
 id: development
 title: Development
-sidebar_position: 1
-displayed_sidebar: developmentSidebar
 path: ['/development']
 ---
 
