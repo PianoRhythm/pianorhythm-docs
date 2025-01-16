@@ -1,0 +1,63 @@
+---
+title: Self Hosted Rooms
+id: tutorial-self-host-rooms
+keywords: [hosting, host room, self hosting, self-host, self host]
+path: ['/tutorials/tutorial-self-host-rooms']
+tags:
+  - self host
+  - self host rooms
+  - host
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+import BaseVideo from '@site/src/components/BaseVideo';
+
+## General
+
+*(Currently Disabled as of version `0.9.0`)*
+
+Version: `0.8.46` brought in the first draft of the ability to host your own room. Well, to be more precise, it's
+actually just setting up a P2P network to handle just the _midi notes_ emitted in the room, instead of them going through
+the main server. _This feature is not available for guests so create an account today!_
+
+This means that any latency bottleneck is now determined only between the peers' network speed. So, if you and another
+user are physically close, then you should be able to play almost near realtime and do things like duets!
+
+<BaseVideo src={"/img/tutorials/eaf8714658c17d33d36249ccf4350129.webm"} version="0.8.46"  />
+
+:::warning
+Since NoteQuota is primarily server sided, self hosted rooms do not have any note quota limiting.
+So that means the `Allow Black Midi` setting has no affect. This will change in the future.
+:::
+
+### How do I set it up?
+
+You can find by going to `New Room -> Advanced -> Self Hosting` and toggling on the `Enable` switch.
+From there, you should see two dropdowns to select your continent and country. By default, the server will try
+to estimate your current location when toggled on and set the values for you.
+
+To respect privacy, I do not intend to add the ability to say what city that you're in. At the very most, I may add
+regions like `US East`.
+<BaseScreenShot src={"/img/tutorials/34f6d44701705e0980d230417a133edb.gif"} />
+
+### If I update the room to disable self hosting, will it going back to using the server?
+Yes! You can toggle between the two kinds of networking.
+
+### Is there a plan to make rooms fully P2P?
+It's possible. I would have to look the architecture to see what makes sense. The main types of data that are emitted in rooms
+are the chat and midi messages.
+
+### I see a ping element over the users in the sidebar?
+In general, `ping` refers to the time taken for data to travel from your computer to a server (or in this case, another player's computer) and then back to your computer.
+The measurement (in milliseconds) is known as latency or lag. So, the higher the number, the longer it takes for data to be exchanged between two users.
+Thus, a higher ping (_which is usually determined by your ISP's network speed and physical location relative to another user_) would make it harder to do any kind of realtime collaborative playing.
+
+<BaseScreenShot src={"/img/tutorials/e8032bf641e09bb2f3ae43f58551966e.png"} />
+
+:::note
+If you a see a ping of `-1`, then something may have gone wrong when trying to connect to that user. Neither you or they will be able to hear each other's notes.
+:::
+
+### What about latency/bandwidth?
+Excerpt from `peerjs.com`:
+> Data sent between the two peers do not touch any other servers, so the connection speed is limited only by the upload and download rates of the two peers. This also means you don't have the additional latency of an intermediary server.The latency to establish a connection can be split into two components: the brokering of data and the identification of clients. PeerJS has been designed to minimize the time you spend in these two areas. For brokering, data is sent through an XHR streaming request before a WebSocket connection is established, then through WebSockets.

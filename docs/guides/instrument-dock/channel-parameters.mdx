@@ -1,0 +1,41 @@
+---
+title: Channel Parameters
+id: channel-parameters
+keywords: [channel parameters, channels, channel volume, channel panning, muting channels]
+path: ['/guides/instrument-dock/channel-parameters']
+tags:
+  - channel parameters
+  - guide
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
+:::note
+This guide is still a work in progress.
+:::
+
+## Introduction
+
+As of version `0.8.3`, you can now manipulate the volume and panning of each midi channel.
+
+<BaseScreenShot version={"0.8.3"} src={"/img/guide/instrument-dock/0aa90057c140edda1cad8045eb715c63.gif"} />
+
+:::note
+The highlighted animation on each slider does not represent the current volume per channel, but instead
+tracks the last `note-on` activity for that channel, based on its velocity value.
+:::
+
+### Where do I find it?
+To access this modal, you can find the `Channels Parameters` button in right widgets sections:
+
+<BaseScreenShot version={"0.8.3"} src={"/img/guide/instrument-dock/05274de2ea63b0460576886136bc3f92.png"} />
+
+You can also right click on each individual channel slot in the instrument dock to access a value slider for
+the volume and/or panning.
+<BaseScreenShot version={"0.8.3"} src={"/img/guide/instrument-dock/80a265c4e9ad45825a287f7b0cffe81f.png"} />
+
+### Muting Channels
+
+You can also mute channels (_setting the channel's volume to 0_) by clicking on the checkbox below the slider,
+as indicated here:
+<BaseScreenShot version={"0.8.3"} src={"/img/guide/instrument-dock/1f8c95ca491d1a13adda02800a6c6769.png"} />

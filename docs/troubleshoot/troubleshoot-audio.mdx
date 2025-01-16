@@ -1,0 +1,62 @@
+---
+id: audio
+title: 'Sound/Audio'
+authors: oak
+tags: [sound, audio, piano, troubleshoot]
+keywords: [troubleshoot, troubleshoot audio, troubleshoot sound]
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
+# TroubleShooting (Sound/Audio)
+
+## General
+
+The first step I would suggest, is to check if your audio device is actually muted.
+Either externally or through your operating system. <br/><br/>If that's okay, then check if
+the volume within PianoRhythm is low or muted:
+<BaseScreenShot version={"0.7.5"} src={"/img/troubleshoot/ff618bff3185e5d50436ffbb61273e89.png"} />
+
+If you still don't hear anything, then check if your soundfont loaded properly. If it was, then you
+should see a list of instruments _(shortcut: `F1`)_ and there should be at least be one instrument active in the dock channels:
+
+<BaseScreenShot version={"0.7.5"} src={"/img/tutorials/484e3e3eda78cccbbd4115913ce0f43d.png"} />
+
+Also double check if the `Enable audio to output only` setting is enabled, if that is not your intention.
+<BaseScreenShot version={"0.7.5"} src={"/img/troubleshoot/f8eff058f8101063c0bd360d573be245.png"} />
+
+### Error logs
+Lastly, check the devtools for any console log errors. You can do by pressing `F12` or `ctrl + shift + I`.
+Click on the `Console` tab and see if any relevant errors show up. If so, feel to make a report in Discord or [here](/feature-requests/?selectedCategory=bug-report)
+
+<BaseScreenShot src={"/img/troubleshoot/2015968972b5e9c2dfed1d2dfda7af13.png"} />
+
+:::info
+
+A channel is indicated as a primary active channel when it has a white border around the icon.
+
+:::
+
+It's also possible that there may be an issue with your soundfont and/or instrument. Double check with another software
+that has soundfont support. I recommend using a **free** soundfont editor called Polyphone: (https://www.polyphone-soundfonts.com/)
+
+## Web
+
+If you're using the browser version, double check if your tab is muted.
+For example in Chrome, right click on the tab and then click on `Unmute site` to unmute it:
+<BaseScreenShot src={"/img/troubleshoot/407e6d6a7c907b7c337d183c26c2d8bb.png"} />
+
+## Desktop
+
+If you're using the desktop version, first check if PianoRhythm is using the correct targeted audio device:
+
+<BaseScreenShot src={"/img/troubleshoot/bb9dbf5b38cf727faff373b581b33718.png"} />
+
+And with that said, also check the target sample rate. If you choose a sample rate that is not supported by your
+audio device then the audio engine will fail. Overall, just leave it as `AUTO` or just make that the sample rate matches
+what your audio device is currently set to in your operating system.
+
+<BaseScreenShot src={"/img/troubleshoot/7d7f24752b07c9c60caae35b45e86ac3.png"} />
+
+Also, apparently certain types of audio devices like certain kinds of headphones seem to have issues.
+If that's the case, try using something else to see if the issue still persists.

@@ -1,0 +1,71 @@
+---
+title: Loading Soundfonts
+id: tutorial-soundfonts
+keywords: [soundfonts, load soundfont, custom soundfont, tutorial]
+path: ['/tutorials/tutorial-soundfonts']
+tags:
+  - tutorial
+  - soundfonts
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+import BaseImage from '@site/src/components/BaseImage';
+
+First of all, what is a soundfont? Well, according to [Wikipedia](https://en.wikipedia.org/wiki/SoundFont):
+> SoundFont is a brand name that collectively refers to a file format and associated technology that
+uses sample-based synthesis to play MIDI files.
+
+So it's pretty much a file that contains a bank of various audio files that is used alongside programs
+that are designed to synthesize different instruments using the soundfont. Overall, a soundfont is a collection
+of instruments.
+
+Here's a technical description of the soundfont structure:
+
+<BaseImage src={"/img/tutorials/SoundFont-small.png"} background="white" />
+<br/>
+
+> The overall structure of a SoundFont is described above. The Preset (also often referred to as an ”instrument”,
+a “program”, or a “patch”) is the feature that is visible to the outside. <br/><br/> Presets are combined into Banks.
+Each Bank can hold 128 Presets and these are numbered either from 0 to 127 (or 1 to 128 - SynthFont uses the range 0-127).
+There can be 128 Banks (numbered 1-128 or 0-127). Hence the total number of Presets in a SoundFont file is large enough. <br/><br/>
+Very few SoundFonts have more than a few Banks in use. Usually these are “variation banks”, .i.e there may be a slightly
+different Acoustic Piano in Bank 1 Preset 0 (1:0) than in  0:0. Banks 0 to 127 are called the Melodic banks while bank 128 is reserved for Percussion presets. <br/><br/>
+The MIDI standard defines MIDI channel 9 (on the scale 0 to 15) as the Percussion channel and hence all MIDI Programs in this channel
+will automatically call for a preset in bank 128.
+
+Source: [Synthfont.com](http://www.synthfont.com/Tutorial6.html#:~:text=The%20overall%20structure%20of%20a,is%20visible%20to%20the%20outside.)
+
+## Loading built-in Soundfonts
+
+You can find a list of soundfonts that have been included with PianoRhythm by going to: `Settings > Soundfont`.
+From there, you can click on `Main Soundfont` and you'll see a dropdown list of various soundfonts that were found
+on the internet.
+<BaseScreenShot version={"0.7.5"} src={"/img/tutorials/e8e41c595f0c99ccd49b0505904362b8.png"} />
+
+## Loading Custom Soundfonts
+
+Not a fan of any of the included soundfonts? Well, you can now load custom soundfonts that are located on your machine.
+The process is similar to loading an included soundfont except in the settings, just click on the `Load Custom Soundfont`
+button:
+<BaseScreenShot version={"0.7.5"} src={"/img/tutorials/142f13a74d6819584d7a6e971113f9c5.gif"} />
+
+## Where to find Soundfonts?
+
+Here a few sites where you can download some soundfonts:
+
+- https://musical-artifacts.com/artifacts?formats=sf2&tags=soundfont
+- https://cymatics.fm/blogs/production/soundfonts
+- https://sites.google.com/site/soundfonts4u/?pli=1
+- https://archive.org/download/free-soundfonts-sf2-2019-04
+- https://hiphopmakers.com/over-2000-free-soundfonts-free-soundfont-player
+
+:::note
+
+PianoRhythm's soundfont player is not perfect, so many soundfonts may
+not load or work at all.
+
+:::
+
+## How can I create my own?
+
+I recommend using a **free** soundfont editor called Polyphone: (https://www.polyphone-soundfonts.com/)

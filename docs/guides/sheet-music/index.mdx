@@ -1,0 +1,197 @@
+---
+title: Sheet Music
+id: sheetmusic
+keywords: [sheet music, submit sheet music, upload sheet music]
+path: ['/guides/sheet-music']
+tags:
+  - sheet music
+  - guide
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
+import styled, { css } from 'styled-components';
+import image_5a90b0b3887492ee413d16fc9c0fb0c9 from '@site/static/img/guide/sheet-music/5a90b0b3887492ee413d16fc9c0fb0c9.gif';
+import image_d14ec8523e2d6247727dc147e47bf206 from '@site/static/img/guide/sheet-music/d14ec8523e2d6247727dc147e47bf206.gif';
+import image_a9a8508c6f318057bc333fa618babd86 from '@site/static/img/guide/sheet-music/a9a8508c6f318057bc333fa618babd86.png';
+import image_bb2f68161bff8b65aa9bc374a5f21efc from '@site/static/img/guide/sheet-music/bb2f68161bff8b65aa9bc374a5f21efc.png';
+import image_f8c15527521aa286d1cf5209f4a37130 from '@site/static/img/guide/sheet-music/f8c15527521aa286d1cf5209f4a37130.png';
+import image_c231da7c2aa446217be35e1828122d19 from '@site/static/img/guide/sheet-music/c231da7c2aa446217be35e1828122d19.png';
+import image_92048cc3f78a74379361f136b7c4c44b from '@site/static/img/guide/sheet-music/92048cc3f78a74379361f136b7c4c44b.png';
+import image_ffee70a39b9eed45badb6143d3711930 from '@site/static/img/guide/sheet-music/ffee70a39b9eed45badb6143d3711930.gif';
+import image_f02c5c715fead9d2ede80516bd03d929 from '@site/static/img/guide/sheet-music/f02c5c715fead9d2ede80516bd03d929.png';
+import image_ab271ff29ae2fd41cac43ee3fdbd5aef from '@site/static/img/guide/sheet-music/ab271ff29ae2fd41cac43ee3fdbd5aef.png';
+
+import BaseImage from '@site/src/components/BaseImage';
+
+## Introduction
+This is just a short introduction to the sheet music repository in PianoRhythm. <br/>
+
+<BaseScreenShot alt="Sheet Music Repo" src={"/img/guide/sheet-music/c22048d6a8733ea0f5ad2bffcf02fbe8.png"} />
+
+### Where do I find it?
+You can get quick access to it by clicking on the hamburger menu at the bottom left corner. You'll then
+see the `Sheet Music` button to display the repository.
+
+<BaseScreenShot src={image_5a90b0b3887492ee413d16fc9c0fb0c9} alt="Music XML Example"/>
+
+### Sheet Music Details
+
+When you find a sheet music that you like, you can click on it to view more details.
+
+<BaseScreenShot src={"/img/guide/sheet-music/7c8e3f01886679528e60312795b43ae7.gif"}/>
+
+Alongside the content of the sheet music, in addition, you'll see details such as
+the upload date, title, original artist, description, tags, last time it was edited, etc.
+
+#### Options
+
+As a guest, at the very minimum, you'll have the options to:
+- Copy the content of the sheet music.
+- Open the sheet music in PianoRhythm's Sheet Music viewer.
+- (`Virtual Piano Only`) Download the sheet music as a midi file.
+
+<BaseScreenShot src={"/img/guide/sheet-music/d186825158733604af9da5ea8c9feaf6.gif"}/>
+
+If you're signed in as a user, you'll see the additional option to favorite the sheet music.
+
+<BaseScreenShot src={"/img/guide/sheet-music/61dc1a693b29e02a24ba260403f29128.png"}/>
+
+#### Virtual Piano Player - Controls
+
+If the sheet music is of the Virtual Piano category, you'll see additional controls to play the sheet music.
+You can find out more here: [Virtual Piano Player](/guides/midi-player/vp-sequencer).
+
+<BaseScreenShot src={"/img/guide/sheet-music/4079627cb28886dc89b1843a44efc5d8.jpg"}/>
+
+## Categories
+As a user, you'll be able to upload, search, and favorite all kinds of sheet music.\
+As of now, sheet music can be categorized in one of three _different flavors_:
+
+- [Music XML](#musicxml)
+- [MultiplayerPiano](#multiplayerpiano)
+- [VirtualPiano](#virtualpiano)
+
+### MusicXML (Currently Not Available)
+What's MusicXML, you say?
+Well, it's the standard open format for exchanging digital sheet music.
+It allows you to collaborate with musicians using different music applications (such as PianoRhythm).
+You can find more info at [www.musicxml.co](https://www.musicxml.com).
+
+Here's an example (please ignore the title name):
+
+<BaseScreenShot src={image_d14ec8523e2d6247727dc147e47bf206} alt="Music XML Example"/>
+
+### MultiplayerPiano
+Similar to PianoRhythm and actually our rival, MultiplayerPiano (MPP for short) is an online piano website.
+Sheet music with this category should be reflected with MPP's keyboard layout.
+
+<BaseScreenShot src={image_a9a8508c6f318057bc333fa618babd86} alt="Multiplayer Piano Example"/>
+
+### VirtualPiano
+> VIRTUAL PIANO IS THE WORLD’S FIRST AND MOST LOVED ONLINE PIANO KEYBOARD
+
+Enough said.
+
+<BaseScreenShot src={image_bb2f68161bff8b65aa9bc374a5f21efc} alt="Virtual Piano Sheet Example"/>
+
+## Uploading Sheet Music
+So you think you're _daring, adventureous, and brave_ enough to upload sheet music, yeah? Well, not a problem! <br/>
+You can get quick access to it by clicking on the hamburger menu at the bottom left corner. <br/> You'll then
+see the `Sheet Music - Upload` button to display the upload modal that contains a form to help you submit your content.
+
+<BaseScreenShot src={image_f8c15527521aa286d1cf5209f4a37130} alt="Sheet Music Upload Modal"/>
+
+### Getting Started
+As of now, there are two ways of uploading sheet music. You can browse and import a local text or MusicXml file, or
+create a new sheet. _Keep in mind_, that a creating a new sheet is only valid for `VirtualPiano` and `MultiplayerPiano` sheets.
+
+Technically, the only required inputs are the `file` you're planning on uploading, and the `title`. But you should make sure that
+it's the appropriate category as well. Once that's filled in, you can just press the `Submit` button at the bottom right of the modal.
+
+Here's an example of creating a new sheet:
+
+<BaseScreenShot src={image_ffee70a39b9eed45badb6143d3711930} alt="Sheet Music Upload Modal - New Sheet"/>
+
+### Inputs
+Let's go over the different inputs, shall we?
+
+#### Title
+```
+This is a required input. It should be reflective of the piece.
+```
+
+#### Original Artist
+```
+This is optional but if you know it, then give credit where credit is due.
+```
+
+#### Original Artist's Album
+```
+This is optional but if you know it, then give credit where credit is due.
+```
+
+#### Description
+```
+This is optional. In here, you can provide extra information about the score in general.
+You can describe how hard it was for you to create it, mention where you originally
+found the source, etc. Please keep it family friendly.
+```
+
+#### Tags
+```
+This is optional. If you would like to add certain meta data (like the _genre_), then this
+is the place to put it. Each piece can have a max of 3 tags.
+```
+
+#### Category
+```
+This will describe the type of sheet music it is. As of now, the only three options are:
+- ~MusicXML~
+- Multiplayer Piano
+- Virtual Piano
+```
+
+#### Privacy Level
+```
+This will set how this sheet music can be accessed. By default, everything is public.
+- Public: Anyone can see it.
+- Private: Only the uploader and certain elevated roles can see it.
+- Unlisted: Won't show up readily on the public listing.
+  It can be accessed by searching for the sheet music's ID.
+```
+
+#### Difficulty
+```
+This is to describe how relatively difficult it would be for an average player
+to learn and play. You can set it to Unknown if you're not sure.
+```
+
+### Approvals
+Most public sheet music will have to go through an approval process before it can be displayed in the public listing.
+Either a mod or a user with the `SheetMusicEditor` role will review your upload.
+
+If it's deemed worthy, then it will be approved and you'll get an email of the change. Here's what it may look like:
+
+<BaseScreenShot src={image_c231da7c2aa446217be35e1828122d19} alt="Sheet Music Approved Email"/>
+
+#### Mods/Sheet Music Editors
+If you have the power to review sheet music, this section is for you.
+In order to start approving/disapproving sheet music, you can filter for all the sheet music that needs approval by clicking the `Need Approval` checkbox
+in the repo.
+
+<BaseScreenShot src={image_f02c5c715fead9d2ede80516bd03d929} alt="Sheet Music - Need Approval"/>
+
+#### Depending on the sheet's status, you can approve/disapprove by either:
+
+- Right clicking on the element to show the context menu
+<BaseScreenShot src={image_ab271ff29ae2fd41cac43ee3fdbd5aef} alt="Sheet Music - Context Menu approve/disapprove"/>
+
+- Clicking the element for a detailed view, and pressing the thumbs up/down
+<BaseScreenShot src={image_92048cc3f78a74379361f136b7c4c44b} alt="Sheet Music - Detailed View approve/disapprove"/>
+
+### Disapprovals
+
+By default, your sheet music will be in a disapproval state. If your sheet music gets approved, then you'll be notified via email.
+Once that happens, your sheet music can be made visible to other users in the community. However, any major changes made to your sheet music
+will reset its state and will have to be approved again. This should change in the future once the pipeline of the process has been enhanced.

@@ -1,0 +1,73 @@
+---
+id: faqs
+title: 'PianoRhythm: FAQs'
+authors: oak
+tags: [faqs, questions, troubleshoot]
+keywords: [faqs, questions, troubleshoot]
+path: ['/faqs']
+---
+
+import FAQStructuredData from '../../src/components/faqs/FAQStructuredData';
+
+<FAQStructuredData title="Common FAQs" faqs={[
+  {
+    question: 'Is V2 ever coming back?',
+    answer: `Short answer is no, unfortunately.`,
+  },
+  {
+    question: 'Why is V2 not ever coming back?',
+    answer: `
+      Short answer is that I'm done with it and I'm ready to move on. <br>
+      What v3 is today, is something v2 will most likely have turned into, if
+      I had continued working on it.
+    `,
+  },
+  {
+    question: `My midi inputs are not showing up. How come?`,
+    answer: `
+    There can be a few reasons as to why your midi device inputs are not showing up.
+    <ul>
+      <li>Your device is already being used by another process/application. Closing it typically resolves the issue.</li>
+      <li>Your devices may not be properly plugged in. Double check the connection.</li>
+      <li>You may be using a browser that may not support WebMIDI (if you're using the browser).
+      Try switching to Chrome or Opera.</li>
+      <li>And finally, it may be a legit bug in PianoRhythm and I'm most likely trying to resolve it.</li>
+    </ul>
+    `,
+  },
+  {
+    question: 'Why is the latency so bad in the browser version?',
+    answer: `
+      It's more of an implementation issue with PianoRhythm. I'm still trying to figure out
+      how to refactor the systems to reduce the perceived latency. </br>
+      That's why I developed the desktop version which has more direct access to midi inputs.
+    `,
+  },
+  {
+    question: 'Why is the audio quality so bad in the browser version?',
+    answer: `
+      I don't think it's <i>that bad</i> but it is indeed not the highest fidelity. </br></br>
+      In short, WebAudio just has certain limitations with synthesized audio. I'm also not
+      a master expert in utilizing</br> the full potential of it, so that's another factor. If
+      you're well versed in the topic and would like to help, please contact me! </br></br>
+      Otherwise, the desktop app uses your machine's native audio driver, so the quality is relatively
+      better there.
+    `,
+  },
+  {
+    question: `Why can't I hear any sound/audio?`,
+    answer: `Check this troubleshooting guide <a href="./troubleshoot/audio">here</a>`,
+  },
+  {
+    question: 'How do I create a plugin?',
+    answer: `Click <a href="./advanced-guides/plugins">here</a>`,
+  },
+  /*{
+    question: 'I found a bug. Where do I report it?',
+    answer: `Click <a href="./feature-requests/?selectedCategory=bug-report">here</a> or make a post in the Discord Server.`,
+  },
+  {
+    question: 'I want to request a new feature to be added. How can I?',
+    answer: `Click <a href="./feature-requests/?selectedCategory=feature-request">here</a>`,
+  },*/
+]} />

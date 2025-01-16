@@ -1,0 +1,111 @@
+---
+title: MIDI Step Sequencer
+id: midi-step-sequencer
+keywords: [step sequencer, midi sequencer]
+path: ['/guides/sequencer']
+tags:
+  - step sequencer
+  - guide
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
+## Introduction
+
+In the step sequencer, you can create patterns by editing multifunctional steps in the step grid.
+Each row represents a channel that controls a sound (which can be a drum kit piece or a note on an instrument).
+
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/689b36ef04b9be7a762ce19d7e9efd92.gif"} />
+
+## Getting Started
+
+First, the step sequencer does not use a separate list of audio samples. It uses the instruments that are loaded
+with your current soundfont. Each channel in the sequencer contains a number of steps, and will emit a sound when
+a step is active during playback. You can further customize each step by setting its _note_ value (default is 60 or C3)
+and/or its _velocity_ (default: 100).
+
+:::caution
+If you're in drum mode and the loaded soundfont does not have any percussion instruments (standard bank of 120 or 128),
+then you probably won't hear any sound.
+:::
+
+### Where do I find it?
+You can either find it by going to the right side widgets of common actions:
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/5f865c030b8f9335a85ff03f4bb1b594.png"} />
+
+Or by going to the left of the bottom bar and clicking the hamburger menu:
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/526c19be646ed7c882f75f109d213132.png"} />
+
+### Loading instruments
+
+To load an instrument, just click on the left most button in a channel:
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/23bb5fa29db75bbbf5be91455d7a49e0.gif"} />
+
+:::note
+The list of selectable instruments depends on the current sequencer mode (`MIDI` or `DRUM`) that you're in.
+:::
+### Warnings
+
+Certain scenarios may cause a warning to be displayed in the step sequencer. One example is if you have the
+drum channel disabled in the settings but you're trying to use the `DRUM` mode in the sequencer.
+
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/dead39010b73e9afb5d8d3b64fafa2c4.png"} />
+
+Warning messages like that are just to bring more awareness to the state of the application, so you're not left
+confused as to why something may not be happening as you're expecting.
+
+## Import/Export
+
+You can also import or export your patterns. When exporting, it'll be saved as a json file that contains the current
+state of the pattern you have set.
+
+<BaseScreenShot src={"/img/guide/midi-step-sequencer/9e1369b8e9be5817fe4501409daaa74a.png"} />
+
+:::note
+There is a versioning system that will be tied to the exported files. In the future, incompatiable or outdated versions may not
+be able to imported properly. More on that soon.
+:::
+
+## Components
+
+### Channels, Steps, and BPM
+
+Here, you can change the total number of channels available, the number of steps per channel, and
+the target BPM for the sequencer:
+<BaseScreenShot src={"/img/guide/midi-step-sequencer/4b7cc9d04e848e75e9c96b3ccf99e8ce.png"} />
+
+### Context menu
+
+There are context menu options available for further customization. If you right click on the channel pad
+or instrument load button then you'll see these options:
+<BaseScreenShot src={"/img/guide/midi-step-sequencer/ac5a715299b62006bc4f8cac26e0272f.png"} />
+
+and if you click on an individual step, then you'll see this:
+<BaseScreenShot src={"/img/guide/midi-step-sequencer/813acf2826e851b50b60376a0525cba4.png"} />
+
+### Sequencer Modes
+
+#### Intro
+There are currently two modes: `DRUM` and `MIDI`. In `DRUM` mode, you are able to select sounds based on the
+currently loaded bank in the percussion channel. As of now, the keys are mapped based on the standard of the
+**General Midi Percussion Map**:
+
+<BaseScreenShot src={"/img/guide/midi-step-sequencer/bccf58ecbbea666515afee3291a4c962.png"} />
+
+While `MIDI` mode just uses everything else available in the soundfont.
+
+### Drum Mode
+
+#### Preset Patterns
+
+There are several included patterns that you can find here:
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/3e38dabbe981a73d03c1426c73f91914.png"} />
+
+Most of these are based from the book - `Pocket Operations: A Collection of Drum Machine Patterns`. There'll be
+more patterns added in the future.
+
+#### Sound Kits
+
+Depending on the soundfont you have loaded, there may be a variety of percussion sound banks that you can select from:
+
+<BaseScreenShot version={"0.8.33"} src={"/img/guide/midi-step-sequencer/726352cf9f178cc497ed34d2bb46456d.png"} />

@@ -1,0 +1,111 @@
+---
+title: Instrument Dock
+id: instrument-dock
+keywords: [instrument dock, transpose, octave, primary channel, slot mode, dock tools]
+path: ['/guides/instrument-dock']
+tags:
+  - instrument dock
+  - guide
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
+:::note
+This guide is still a work in progress
+:::
+
+## Introduction
+
+The instrument dock is one the core features of PianoRhythm. From there, you'll be able the view and manipulate the different
+midi channel states. What's a midi channel, you may ask? Well, here's a nice definition:
+> The concept of channels is central to how most MIDI messages work. A channel is an independent path over which messages travel to their destination. There are 16 channels per MIDI device. A track in your sequencer program plays one instrument over a single channel. The MIDI messages in the track find their way to the instrument over that channel.
+
+_source: [Introduction to the MIDI Standard](https://cecm.indiana.edu/361/midi.html#:~:text=MIDI%20Channels&text=A%20channel%20is%20an%20independent,the%20instrument%20over%20that%20channel)._
+
+<BaseScreenShot version={"0.8.3"} src={"/img/guide/instrument-dock/b3de90239c2269f945010375be06fd46.gif"} />
+
+## Tranpose
+You can change the current transpose of a key by either entering the transpose number (-14 to 14) or clicking on the up/down arrows keys.
+Ultimately, it's just a number that you can add to the key you're playing to shift it up or down.
+The default number is 0. To reset it, simply click on the button that says `Transpose`.
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/9c1c9f428be323a7e70d6d41550a5a4d.gif"} />
+
+## Octave
+You can change the current octave of a key by either entering the octave number (-7 to 7) or clicking on the up/down arrows keys.
+Ultimately, it's just a number that you can add to the key you're playing to shift it up or down by an octave (12 keys).
+The default number is 0. To reset it, simply click on the button that says `Octave`.
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/66dacaf32184c222421f51e700b6e691.gif"} />
+
+## Primary channel
+Depending on the slot mode, the primary channel is just the default channel that is used when playing notes. By default, the primary channel is 0.
+That means, whatever instrument is in channel 0, will be the one used to synthesize the audio. A channel is indicated as a primary active channel when it has a white border around the icon.
+You can change the primary channel by right click on an active channel icon (meaning that there's an instrument loaded) and then selecting `Make Channel Primary`.
+
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/8469a988b8f838b5e9551ab5e67e4ea3.gif"} />
+
+:::note
+Depending on the current slot mode, the primary channel may not have an affect.
+For example, the primary channel is ignored in `Multi` mode.
+:::
+
+## Slot Modes
+The slot mode is just a particular mode for the midi channels that the audio engine can interpret differently.
+You can change the slot mode by clicking on the button that says: `Slot Mode` in the instrument dock.
+
+### All
+All is the default mode. This means that all the notes created by the user (either by keyboard, mouse, midi piano, etc)
+will be emitted to a primary channel (default is channel 0). _And_ all others channels are enabled and allowed to listen for data.
+For example, if you're playing a midi file or somehow emitting data on various channels, then the audio engine will process it accordingly.
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/e793f0fab2831e905897605ebd086dd1.png"} />
+
+### Single
+Single mode will ignore all other channels except for one. It will only use and listen to data on channel 0.
+It doesn't matter what the primary channel is set to since it will not be used.
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/8f7ec240a78eed799f559ec02b2d70ff.png"} />
+
+### Multi
+Multi mode allows note data to be emitted to multiple channels at the same time. By default, it's 3.
+This means that playing any notes will have data be emitted to channels 0, 1, and 2 at the same time. This is useful when you want to play
+multiple different instruments at the same time for various effects.
+For example, you can have the piano in channel 0 and a guitar in channel 1 for a cool effect. The default max number of channels
+can be changed in the settings by going to: <br/>`Settings -> Midi -> Max Multi Mode Channels`.
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/fd1dfa92b71fe8285eabfd3fcb8df799.png"} />
+
+### Splits
+  Split modes pretty much splits the actually keyboard into different sections with a respective channel. In the 3D piano, you'll see each section color coded to a particular channel.
+
+  <BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/74f0278f8e7ba08a84db1c70bb205372.gif"} />
+
+:::note
+The keys that appear transparent is just an indication that there's no instrument actively loaded for that channel.
+:::
+
+  - `Split2`: Splits the piano in half. The first half will emit data to channel 0 while the second half emits to channel 1.
+  - `Split4`: Splits the piano into quarters. From channels 0 to 3.
+  - `Split8`: Splits the piano into eigths. From channels 0 to 7.
+
+
+## Tools
+
+The tools are just a collection of some common actions related to the dock or in general.
+
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/2a3a4a4edcc166858bbb1c90ed2ffbb3.png"} />
+
+Some actions are kind of self explanatory but here some more details on a few:
+
+### Channel Display Mode
+The `Channel Display Mode` action simply changes the total number of channel icons that are displayed in the dock.
+By default, 8 channel icons are displayed at a time. You can cycle through all 16 by clicking the left/right arrow buttons.
+<BaseScreenShot version={"0.8.37"} src={"/img/guide/instrument-dock/8d717a785a715da0a642aeddd240939b.gif"} />
+
+### Reset to Default
+This `Reset to Default` action will reset all the channels (including their state like volume, panning, etc) to their default values.
+
+### Clear instruments
+The `Clear Instruments` action will remove all instruments from the channels.
+
+### Open Midi File
+The `Open Midi File` action will open a file dialog to import a valid midi file (`.mid`) to play in PianoRhythm's midi player.
+
+### Instrument Selection
+The `Instrument Selection` action will open up the list of instruments available for your currently loaded soundfont.
