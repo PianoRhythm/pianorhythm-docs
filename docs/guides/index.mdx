@@ -4,6 +4,8 @@ sidebar_position: 1
 keywords: [general terms, terminologies]
 ---
 
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
 # General
 
 These are just common guides about the different features of PianoRhythm.
@@ -17,3 +19,68 @@ Below, you can find some common terminologies within PianoRhythm:
 | Soundfont | In simplified terms, a soundfont is a file that can contain multiple different kinds of instruments used for audio synthesizers. |
 | Instrument Dock | The instrument dock is one of the UI components for managing the different midi channels. <br/> You can manage the different instruments, change the transpose or octave, set the slot mode, and more! You can find out more [here](/guides/instrument-dock). |
 | Slot Mode | The slot modes are different midi channel modes that the audio engine can interpret. The default mode is `All`. You can find out more [here](/guides/instrument-dock/#slot-modes). |
+
+# FAQ
+
+## How do I report a bug?
+The easiest way to report a bug is to join the [PianoRhythm Discord server](https://discord.gg/7vzr8j6) and report it in the `#bug-reports` channel.
+
+## How do I suggest a feature?
+You can suggest a feature by joining the [PianoRhythm Discord server](https://discord.gg/7vzr8j6) and suggesting it in the `#feedback` channel.
+
+## How do I contact the developer?
+You can contact the developer by joining the [PianoRhythm Discord server](https://discord.gg/7vzr8j6) and messaging `oak_9806`.
+You can also contact the developer by sending an email to [oak@pianorhythm.io](mailto:oak@pianorhythm.io).
+
+## How to change to 2D mode?
+You can change to 2D mode by clicking on the `Camera Mode` button in action widgets section, at the top right.
+You'll then see a 2D piano view on the canvas.
+
+<BaseScreenShot version={"0.9.9"} src={"/img/guide/4590885701fca2e2181bde1f798bc696.png"} />
+
+## My screen is black, what do I do?
+
+If your screen is black, it's likely that you have a WebGPU issue. You can try the following:
+  - Go to `Settings` -> `Graphics` -> `Use WebGPU` and disable it.
+  - Refresh the page.
+
+You can also try disable using the offscreen canvas by going to `Settings` -> `Graphics` -> `Enable Offscreen Canvas`.
+This will force the canvas to be rendered on the main thread.
+
+## My FPS is low, what do I do?
+
+If your FPS is low, it's likely that you have a performance issue. You can try the following:
+  - Go to `Settings` -> `Graphics (General)` and change the `Graphics Preset` to `Medium` or `Low`.
+  - Go to `Settings` -> `Graphics (General)` and disable certain features like `Lights`, `Particle System`, `Shadows`, etc.
+  - Go to `Settings` -> `Graphics (Advanced)` and use low poly models by enabling `Use Low Poly Models`.
+  - Switch to 2D mode. Find more information [here](/guides/#how-to-change-to-2d-mode).
+
+## How do I connect my MIDI device?
+
+You can connect your MIDI device by pressing the `MIDI` button on the bottom bar to open the Midi modal,
+and selecting your MIDI device. You'll see a list of available MIDI input and output devices to connect to.
+
+<BaseScreenShot version={"0.9.9"} src={"/img/guide/52a0801b23ffc14c82fc0f7a0962bb4c.png"} />
+
+## My MIDI device is not working or showing up, what do I do?
+
+If your MIDI device is not working or showing up, it's likely that you have a MIDI issue. You can try the following:
+  - Refresh the page.
+  - Reconnect your MIDI device.
+  - Check if your MIDI device is connected properly.
+  - Check if your MIDI device isn't being used by another application. If it is, close that application and try again.
+
+## How can I change my profile picture?
+
+You can change your profile picture by going to `Settings` -> `My Account` and clicking on the
+current profile picture to open the file picker. You can then select an image to upload as your profile picture.
+However, you need to be logged in to change your profile picture. **This feature is not available for guests**.
+
+<BaseScreenShot version={"0.9.9"} src={"/img/guide/3a4ccaedec4ff4f89dfd9a7bf5bb68a0.gif"} />
+
+## How do I change my keybinds?
+
+You can change your keybinds by going to `Settings` -> `Input` -> `Piano Keys Layout` and clicking on the keybind you want to change.
+You can choose between VP, MPP (Multiplayer Piano), or Custom keybinds.
+
+<BaseScreenShot version={"0.9.9"} src={"/img/guide/512afe09cc6bc4efb176e2aaeab72f10.png"} />
