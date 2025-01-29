@@ -1,0 +1,109 @@
+---
+id: commands
+title: Commands
+keywords: [commands, chat commands, chat, commands list]
+---
+
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
+## Chat Commands Documentation
+
+This documentation provides an overview of the available chat commands in the PianoRhythm application. The commands are categorized into client commands and moderator commands.
+
+To use a command, type `/` and then command in the chat input box and press Enter. For example, to view all available commands, type `/help` and press Enter.
+
+A pop up modal will appear with the list of available commands and their descriptions.
+Press the `Up` and `Down` arrow keys to navigate the list, and press `Tab` to select the command or `Enter` to execute it.
+
+<BaseScreenShot version={"0.9.9"} src={"/img/guide/general/ea68e39ef25f10c9ed83a30b420ae14c.png"} />
+
+:::note
+These commands are only shown on the client and will not be saved in the chat history on the server.
+:::
+
+### Client Commands
+
+These commands are available to all users:
+
+- **help**
+  - **Description**: View all available commands.
+
+- **me**
+  - **Description**: View user info.
+
+- **discord**
+  - **Description**: Get the link to PianoRhythm's Community Discord Server!
+
+- **youtube**
+  - **Description**: Get the link to PianoRhythm's YouTube Channel!
+
+- **twitch**
+  - **Description**: Get the link to PianoRhythm's Twitch Channel!
+
+- **issues**
+  - **Description**: Get the link to PianoRhythm's Issue Tracker!
+
+- **download**
+  - **Description**: Get the latest desktop app version!
+
+- **mute_self**
+  - **Description**: Mute your own notes to prevent others from hearing you.
+
+- **unmute_self**
+  - **Description**: Unmute your notes.
+
+- **offline_mode**
+  - **Description**: Disconnect from the server and play offline.
+  - **Disabled**: Yes
+
+### Moderator Commands
+
+These commands are available to moderators only:
+
+- **ban_user**
+  - **Description**: (Not Implemented Yet | Use context menu on user in sidebar) Ban a user from the server.
+  - **Arguments**:
+    - `user`: The user to ban.
+
+- **edit_badges**
+  - **Description**: Edit badges for a user.
+  - **Arguments**:
+    - `user`: The user whose badges will be edited.
+
+- **clear_chat**
+  - **Description**: Clear the chat in the room for everyone.
+
+### Additional Commands
+
+These commands are available to members and moderators:
+
+- **whisper**
+  - **Description**: Send a private message to a user.
+  - **Disabled**: Yes
+  - **Arguments**:
+    - `user`: The user to send a message to.
+    - `message`: The message content.
+
+- **status_text**
+  - **Description**: Set your status text.
+  - **Arguments**:
+    - `text`: The status text (optional).
+
+- **clear_status_text**
+  - **Description**: Clear your status text.
+
+- **nickname**
+  - **Description**: Set your nickname.
+  - **Arguments**:
+    - `text`: The nickname (optional).
+
+- **clear_nickname**
+  - **Description**: Clear your nickname.
+
+- **profile_description**
+  - **Description**: Set your profile description.
+  - **Arguments**:
+    - `text`: The profile description (optional).
+
+- **clear_profile_description**
+  - **Description**: Clear your profile description.
