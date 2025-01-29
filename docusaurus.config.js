@@ -215,11 +215,11 @@ module.exports = async function createConfigAsync() {
             //   position: 'left',
             //   to: '/feature-requests',
             // },
-            {
-              label: "Changelog",
-              position: 'left',
-              to: '/changelog',
-            },
+            // {
+            //   label: "Changelog",
+            //   position: 'left',
+            //   to: '/changelog',
+            // },
             {
               label: "Community",
               position: 'left',

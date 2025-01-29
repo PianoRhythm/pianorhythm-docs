@@ -31,7 +31,6 @@ The desktop app is the preferred platform since it should offer the most stabili
 
 The web app browser is not too bad but the synthesizer may be limited due to current WebAudio technology. The desktop app actually uses the machine's native audio driver for rendering audio.
 
-
 ```mermaid
 block-beta
   Web Desktop
@@ -45,6 +44,8 @@ The desktop app is hosted via [Tauri](https://tauri.app/). It uses the OS's nati
 
 ### Graphics Engine
 
-The primary graphics engine uses [Babylon.js](https://babylonjs.com). A pretty powerful 3D web rendering engine. It has support for using WebGL2 and even WebGPU.
+The primary graphics engine used to use [Babylon.js](https://babylonjs.com). A pretty powerful 3D web rendering engine. It has support for using WebGL2 and even WebGPU. But now with version `0.10.0`, the graphics engined used is [Bevy](https://bevyengine.org/).
 
 ### Audio Synth Engine
+
+The audio synthesizer is written in Rust. It's a modified version of a synthesizer called [OxiSynth](https://github.com/PolyMeilex/OxiSynth) (which was inspired by `FluidSynth`).
