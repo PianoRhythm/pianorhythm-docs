@@ -1,10 +1,3 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 const path = require('path');
 const fs = require('fs-extra');
 const pluginContentBlog = require('@docusaurus/plugin-content-blog');
@@ -106,6 +99,7 @@ ${content.replace(/####/g, '##')}
 
 /**
  * @param {import('@docusaurus/types').LoadContext} context
+ * @param options
  * @returns {import('@docusaurus/types').Plugin}
  */
 async function ChangelogPlugin(context, options) {
@@ -118,18 +112,31 @@ async function ChangelogPlugin(context, options) {
     blogPostComponent: '@theme/ChangelogPage',
   });
 
-  const changelogPath = './changelog.md';
+  const changelogSourceFile = path.join(context.siteDir, 'changelog.md');
 
   return {
     ...blogPlugin,
     name: 'changelog-plugin',
     async loadContent() {
       try {
-        const fileContent = await fs.readFile(changelogPath, 'utf-8');
+        console.log(`Loading changelog from: ${changelogSourceFile}`);
+
+        if (!await fs.pathExists(changelogSourceFile)) {
+          console.error(`Changelog source file not found: ${changelogSourceFile}`);
+          return await blogPlugin.loadContent();
+        }
+
+        const fileContent = await fs.readFile(changelogSourceFile, 'utf-8');
         const sections = fileContent
           .split(/(?=\n## )/)
           .map(processSection)
           .filter(Boolean);
+
+        // Ensure the directory exists
+        await fs.ensureDir(generateDir);
+
+        // Clear the directory
+        await fs.emptyDir(generateDir);
 
         await Promise.all(
           sections.map((section) =>
@@ -144,6 +151,12 @@ async function ChangelogPlugin(context, options) {
         await fs.outputFile(authorsPath, JSON.stringify(authorsMap, null, 2));
 
         const content = await blogPlugin.loadContent?.();
+
+        if (!content || !content.blogPosts) {
+          console.warn('Blog plugin did not return expected content structure');
+          return content;
+        }
+
         content.blogPosts.forEach((post, index) => {
           const pageIndex = Math.floor(index / options.postsPerPage);
           post.metadata.listPageLink = normalizeUrl([
@@ -155,19 +168,22 @@ async function ChangelogPlugin(context, options) {
 
         return content;
       } catch (ex) {
-        console.error(ex);
+        console.error("Changelog plugin error:", ex);
         return await blogPlugin.loadContent();
       }
     },
     configureWebpack(...args) {
       const config = blogPlugin.configureWebpack?.(...args);
       const pluginDataDirRoot = path.join(
-        context.generatedFilesDir,
-        'changelog-plugin',
-        'default',
+          context.generatedFilesDir,
+          'changelog-plugin',
+          options.id || 'changelog'  // Use the same ID as provided to the blog plugin
       );
 
-      const mdxLoader = config.module.rules[0].use[0];
+      // Make sure we're using the correct MDX loader
+      const mdxLoader = config.module.rules.find(
+          rule => rule.test && rule.test.test('.md')
+      )?.use.find(use => use.loader && use.loader.includes('mdx-loader'));
 
       // Redirect the metadata path to our folder
       mdxLoader.options.metadataPath = (mdxPath) => {
@@ -184,7 +200,7 @@ async function ChangelogPlugin(context, options) {
     },
     getPathsToWatch() {
       // Don't watch the generated dir
-      return [changelogPath];
+      return [changelogSourceFile];
     },
   };
 }
