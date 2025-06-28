@@ -52,7 +52,7 @@ module.exports = async function createConfigAsync() {
         require.resolve('./src/plugins/webpack/index.js'),
         {}
       ],
-      require.resolve('docusaurus-lunr-search'),
+      // require.resolve('docusaurus-lunr-search'),
       [
         require.resolve('./src/plugins/changelog/index.js'),
         {
@@ -269,10 +269,6 @@ module.exports = async function createConfigAsync() {
           ],
           copyright: `Copyright © ${new Date().getFullYear()} <b>PianoRhythm, LLC.</b> Built with Docusaurus.`,
         },
-        // prism: {
-        //   theme: lightCodeTheme,
-        //   darkTheme: darkCodeTheme,
-        // },
         metadata: [
           {
             name: 'keywords',
@@ -295,6 +291,12 @@ module.exports = async function createConfigAsync() {
             content: "https://assets.pianorhythm.io/images/logo.png",
           }
         ],
+        algolia: {
+          apiKey: '092f02625f6059bbdaeb244b27d88ccb',
+          indexName: 'docs_pianorhythm_io_vkdm8hozh8_pages',
+          appId: 'VKDM8HOZH8',
+          contextualSearch: true,
+        }
       }),
 
     scripts: [
