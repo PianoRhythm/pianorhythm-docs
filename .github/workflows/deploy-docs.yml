@@ -28,7 +28,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 19.2.0
 
       - name: 📥 PNPM install
         uses: ./.github/actions/pnpm-install
