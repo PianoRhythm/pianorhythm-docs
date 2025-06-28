@@ -63,14 +63,6 @@ runs:
         context: .
         push: true
         tags: ${{ steps.image_tags.outputs.latest }}
-        build-args: |
-          PR_CLIENT_VERSION=${{ env.PR_CLIENT_VERSION }}
-          PR_ASSETS_URL=${{ env.PIANORHYTHM_ASSETS_CDN_URL }}
-          PR_CDN_URL=${{ env.PIANORHYTHM_CDN_URL }}
-          PIANORHYTHM_SERVER_URL=${{ env.PIANORHYTHM_SERVER_URL }}
-          PIANORHYTHM_MONGODB_API_HOST=${{ env.PIANORHYTHM_MONGODB_API_HOST }}
-          PIANORHYTHM_MONGODB_API_DATASOURCE=${{ env.PIANORHYTHM_MONGODB_API_DATASOURCE }}
-          PIANORHYTHM_MONGODB_API_KEY_EXPRESS=${{ secrets.PIANORHYTHM_MONGODB_API_KEY_EXPRESS }}
             
     # - name: Upload image to registry
     #   shell: bash

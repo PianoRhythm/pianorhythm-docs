@@ -33,8 +33,34 @@ jobs:
       - name: 📥 PNPM install
         uses: ./.github/actions/pnpm-install
 
+      - name: Generate build cache key
+        id: build-cache-key
+        run: |
+          # Create a hash of all files that affect the build output
+          CONTENT_HASH=$(find docs blog src static changelog docusaurus.config.js sidebars.js package.json pnpm-lock.yaml -type f -exec sha256sum {} \; 2>/dev/null | sort | sha256sum | cut -d' ' -f1)
+          echo "hash=$CONTENT_HASH" >> $GITHUB_OUTPUT
+          echo "Build content hash: $CONTENT_HASH"
+
+      - name: Cache build output
+        id: build-cache
+        uses: actions/cache@v4
+        with:
+          path: ./dist
+          key: ${{ runner.os }}-docs-build-${{ steps.build-cache-key.outputs.hash }}
+          restore-keys: |
+            ${{ runner.os }}-docs-build-
+
       - name: Build Docs
+        if: steps.build-cache.outputs.cache-hit != 'true'
         run: pnpm run build
+
+      - name: Verify build output exists
+        run: |
+          if [ ! -d "./dist" ]; then
+            echo "Error: Build output directory ./dist does not exist"
+            exit 1
+          fi
+          echo "Build output verified - dist directory exists"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
