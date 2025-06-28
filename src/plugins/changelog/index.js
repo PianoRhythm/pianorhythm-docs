@@ -21,6 +21,7 @@ const publishTimes = new Set();
 const authorsMap = {};
 
 const YOUTRACK_ISSUES_URL = `https://pianorhythm.myjetbrains.com/youtrack/issue`;
+const GITHUB_ISSUES_URL = `https://github.com/PianoRhythm/pianorhythm-ssr/issues`;
 
 /**
  * @param {string} section
@@ -38,6 +39,7 @@ function processSection(section) {
   const content = section
     .replace(/\n## .*/, '')
     .replace(/\[(PRFP-)(\d+)\]/g, `[$1$2](${YOUTRACK_ISSUES_URL}/$1$2)`)
+    .replace(/\[(#)(\d+)\]/g, `[$1$2](${GITHUB_ISSUES_URL}/$1$2)`)
     .replace('running_woman', 'running')
     .trim();
 
@@ -116,7 +118,7 @@ async function ChangelogPlugin(context, options) {
     blogPostComponent: '@theme/ChangelogPage',
   });
 
-  const changelogPath = path.join(__dirname, '../../../../public/assets/other/changelog.md');
+  const changelogPath = './changelog.md';
 
   return {
     ...blogPlugin,
@@ -141,7 +143,7 @@ async function ChangelogPlugin(context, options) {
         const authorsPath = path.join(generateDir, 'authors.json');
         await fs.outputFile(authorsPath, JSON.stringify(authorsMap, null, 2));
 
-        const content = await blogPlugin.loadContent();
+        const content = await blogPlugin.loadContent?.();
         content.blogPosts.forEach((post, index) => {
           const pageIndex = Math.floor(index / options.postsPerPage);
           post.metadata.listPageLink = normalizeUrl([
@@ -158,7 +160,7 @@ async function ChangelogPlugin(context, options) {
       }
     },
     configureWebpack(...args) {
-      const config = blogPlugin.configureWebpack(...args);
+      const config = blogPlugin.configureWebpack?.(...args);
       const pluginDataDirRoot = path.join(
         context.generatedFilesDir,
         'changelog-plugin',

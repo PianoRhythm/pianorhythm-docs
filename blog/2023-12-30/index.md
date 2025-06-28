@@ -7,6 +7,8 @@ tags: [oak, pianorhythm, server upgrade]
 
 Whew, it's been a while since I've posted here. I've been busy with life and other things, but I've finally gotten around to upgrading the server. Version `0.9.0` has now been released! I've also added a few new features to the app. Let's dive in, shall we?
 
+{/* truncate */}
+
 ### Server Upgrade
 I've been on quite an adventure with the development of the server. Initially, it was built using F# and the Akka.NET framework. However, as the complexity grew, I found the backend becoming a bit too challenging to maintain. Also, the server didn't seem to be as performant as I would have liked. So I hope many of the weird bugs that you've encountered in the past, due to the server, are now gone with this new update.
 

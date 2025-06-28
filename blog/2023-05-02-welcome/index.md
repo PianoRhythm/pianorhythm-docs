@@ -16,6 +16,8 @@ If you're looking to create a blog post pertaining to PianoRhythm, piano, or jus
 
 You can find the PianoRhythm app's url [here](https://pianorhythm.io).
 
+{/* truncate */}
+
 ### Why did I create PianoRhythm in the first place?
 Well, like many of you, I was an avid user of MPP and loved it. At the time, I just got into learning the piano and actual programming. I thought MPP had so much potential and the lack of updates kind of pushed me into envisioning my own thing. PianoRhythm is just a passion product. I didn't create it for the profit or for the masses.
 

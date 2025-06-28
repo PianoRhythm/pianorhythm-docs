@@ -1,5 +1,5 @@
 (function() {
-  var script = document.createElement('script');
+  let script = document.createElement('script');
   script.async = true;
   script.src = "https://analytics.pianorhythm.io/script.js";
   script.setAttribute('data-ackee-server', 'https://analytics.pianorhythm.io');

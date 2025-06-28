@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { type ReactNode } from 'react';
+import React, { JSX, type ReactNode } from 'react';
 import clsx from 'clsx';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import { HtmlClassNameProvider, ThemeClassNames } from '@docusaurus/theme-common';
-import { BlogPostProvider, useBlogPost } from '@docusaurus/theme-common/internal';
+import { BlogPostProvider, useBlogPost } from '@docusaurus/plugin-content-blog/client';
 import BlogPostPageMetadata from '@theme/BlogPostPage/Metadata';
 import BlogLayout from '@theme/BlogLayout';
 import ChangelogItem from '@theme/ChangelogItem';
@@ -18,6 +18,7 @@ import ChangelogPaginator from '@theme/ChangelogPaginator';
 import TOC from '@theme/TOC';
 import type { Props } from '@theme/BlogPostPage';
 import type { BlogSidebar } from '@docusaurus/plugin-content-blog';
+
 const semverSort = require('semver-sort');
 
 function BackToIndexLink() {
@@ -32,9 +33,9 @@ function BackToIndexLink() {
 }
 
 function ChangelogPageContent({
-  sidebar,
-  children,
-}: {
+                                sidebar,
+                                children
+                              }: {
   sidebar: BlogSidebar;
   children: ReactNode;
 }): JSX.Element {
@@ -43,7 +44,7 @@ function ChangelogPageContent({
   const {
     hide_table_of_contents: hideTableOfContents,
     toc_min_heading_level: tocMinHeadingLevel,
-    toc_max_heading_level: tocMaxHeadingLevel,
+    toc_max_heading_level: tocMaxHeadingLevel
   } = frontMatter;
 
   let sortedVersions: string[] = semverSort.desc(sidebar.items.map(x => x.title));
@@ -61,12 +62,12 @@ function ChangelogPageContent({
           />
         ) : undefined
       }>
-      <BackToIndexLink />
+      <BackToIndexLink/>
 
       <ChangelogItem>{children}</ChangelogItem>
 
       {(nextItem || prevItem) && (
-        <ChangelogPaginator nextItem={nextItem} prevItem={prevItem} />
+        <ChangelogPaginator nextItem={nextItem} prevItem={prevItem}/>
       )}
     </BlogLayout>
   );
@@ -82,11 +83,11 @@ export default function ChangelogPage(props: Props): JSX.Element {
       <HtmlClassNameProvider
         className={clsx(
           ThemeClassNames.wrapper.blogPages,
-          ThemeClassNames.page.blogPostPage,
+          ThemeClassNames.page.blogPostPage
         )}>
-        <BlogPostPageMetadata />
+        <BlogPostPageMetadata/>
         <ChangelogPageContent sidebar={props.sidebar}>
-          <ChangelogContent />
+          <ChangelogContent/>
         </ChangelogPageContent>
       </HtmlClassNameProvider>
     </BlogPostProvider>

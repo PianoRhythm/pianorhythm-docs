@@ -31,6 +31,11 @@ module.exports = async function createConfigAsync() {
     organizationName: 'pianorhythm',
     projectName: 'pianorhythm',
 
+    future: {
+      v4: false, // Improve compatibility with the upcoming Docusaurus v4
+      experimental_faster: false,
+    },
+
     plugins: [
       async function myPlugin(context, options) {
         return {
@@ -48,23 +53,10 @@ module.exports = async function createConfigAsync() {
         {}
       ],
       require.resolve('docusaurus-lunr-search'),
-      // [
-      //   'docusaurus-plugin-typedoc',
-      //   Plugin / TypeDoc options
-      //   {
-      //     ...typedocJSON,
-      //     entryPoints: typedocJSON.entryPoints.map(x => path.join(__dirname, "../", x)),
-      //     tsconfig: '../typedoc.tsconfig.json',
-      //     plugin: [
-      //       'typedoc-plugin-rename-defaults',
-      //       'typedoc-plugin-mdn-links',
-      //       'typedoc-plugin-zod'
-      //     ],
-      //   },
-      // ],
       [
         require.resolve('./src/plugins/changelog/index.js'),
         {
+          id: 'changelog',
           blogTitle: 'PianoRhythm changelog',
           blogDescription:
             'Keep yourself up-to-date about new features in every release',
@@ -74,7 +66,6 @@ module.exports = async function createConfigAsync() {
           showReadingTime: false,
           postsPerPage: 20,
           archiveBasePath: null,
-          authorsMapPath: 'authors.json',
           feedOptions: {
             type: 'all',
             title: 'PianoRhythm changelog',
@@ -137,14 +128,17 @@ module.exports = async function createConfigAsync() {
             ],
           },
           blog: {
+            id: 'blog',
             blogTitle: 'PianoRhythm Blog',
             blogDescription: 'A blog about the PianoRhythm app and its development.',
             showReadingTime: true,
+            onInlineTags: 'warn',
+            onInlineAuthors: 'warn',
+            onUntruncatedBlogPosts: 'warn',
           },
           theme: {
-            customCss: require.resolve('./src/css/custom.css'),
+            customCss: require.resolve('./src/css/custom.css')
           },
-          googleAnalytics,
           gtag: googleAnalytics,
           sitemap: {
             changefreq: 'weekly',
@@ -215,11 +209,11 @@ module.exports = async function createConfigAsync() {
             //   position: 'left',
             //   to: '/feature-requests',
             // },
-            // {
-            //   label: "Changelog",
-            //   position: 'left',
-            //   to: '/changelog',
-            // },
+            {
+              label: "Changelog",
+              position: 'left',
+              to: '/changelog',
+            },
             {
               label: "Community",
               position: 'left',
@@ -273,7 +267,7 @@ module.exports = async function createConfigAsync() {
               ],
             },
           ],
-          copyright: `Copyright © ${new Date().getFullYear()} <b>PianoRhythm, LLC.</b>`,
+          copyright: `Copyright © ${new Date().getFullYear()} <b>PianoRhythm, LLC.</b> Built with Docusaurus.`,
         },
         // prism: {
         //   theme: lightCodeTheme,

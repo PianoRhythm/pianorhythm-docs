@@ -34,7 +34,7 @@ jobs:
         uses: ./.github/actions/pnpm-install
 
       - name: Build Docs
-        run: npm run build
+        run: pnpm run build
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

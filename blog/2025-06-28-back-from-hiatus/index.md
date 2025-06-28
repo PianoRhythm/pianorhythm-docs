@@ -9,6 +9,8 @@ Hey everyone! Oak here, and I'm excited to announce that I'm back to actively wo
 
 I know many of you have been wondering what's been going on, and I wanted to take a moment to update you all on where things stand and what's coming next.
 
+{/* truncate */}
+
 ## Where I've Been
 
 Life has a way of throwing curveballs, and the past several months have been no exception for me. Between work commitments, personal matters, and the need to step back and recharge, I had to take some time away from active PianoRhythm development. 

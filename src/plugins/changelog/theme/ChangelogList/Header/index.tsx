@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';

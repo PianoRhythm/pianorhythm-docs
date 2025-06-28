@@ -1,7 +1,0 @@
-.env
-*.cmd
-*.yml
-Dockerfile
-faiss_index/**
-qdrant_storage/**
-.vscode/
