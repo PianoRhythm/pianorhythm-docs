@@ -1,0 +1,411 @@
+# Core Business Logic (pianorhythm_core)
+
+The `pianorhythm_core` is the heart of PianoRhythm, implemented in Rust and compiled to WebAssembly for high-performance audio processing, 3D rendering, and real-time communication.
+
+## Overview
+
+The core engine is structured as a modular Rust workspace with the following main components:
+
+```
+pianorhythm_core/
+├── core/           # Main application logic and state management
+├── synth/          # Audio synthesis engine
+├── bevy_renderer/  # 3D rendering with Bevy Engine
+├── shared/         # Shared utilities and types
+├── proto/          # Protocol Buffer definitions
+└── desktop/        # Desktop-specific integrations
+```
+
+## Core Module Architecture
+
+### State Management
+
+The core uses a Redux-like pattern with reducers for state management:
+
+```rust
+pub struct AppState {
+    pub client_state: ClientState,
+    pub current_room_state: CurrentRoomState,
+    pub rooms_list_state: RoomsState,
+    pub audio_process_state: AudioProcessState,
+    pub app_settings: AppSettings,
+    pub app_environment: AppCommonEnvironment,
+}
+```
+
+**Key Reducers:**
+- `AppStateReducer` - Main application state coordination
+- `ClientStateReducer` - User client state management
+- `CurrentRoomStateReducer` - Active room state
+- `RoomsStateReducer` - Available rooms list
+- `AudioProcessStateReducer` - Audio processing state
+
+### WebAssembly Interface
+
+```rust
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen]
+pub fn create_synth(options: PianoRhythmSynthesizerDescriptor) -> Result<(), String> {
+    unsafe {
+        _ = SYNTH.set(PianoRhythmSynthesizer::new(
+            options,
+            Some(Box::new(|event| emit_to_note_buffer_engine(&event))),
+            Some(Box::new(handle_synth_events)),
+            Some(Box::new(handle_audio_channel_updates)),
+        ));
+    }
+    Ok(())
+}
+```
+
+**WASM Exports:**
+- `init_wasm()` - Initialize WASM module
+- `create_synth()` - Create audio synthesizer
+- `send_app_action()` - Send actions to core
+- `websocket_connect()` - WebSocket connection management
+- `midi_io_start()` - MIDI device initialization
+
+## Audio Synthesis Engine
+
+### Synthesizer Architecture
+
+The audio engine is built on a custom synthesizer implementation:
+
+```rust
+pub struct PianoRhythmSynthesizer {
+    synth: oxisynth::Synth,
+    socket_users: HashMap<u32, PianoRhythmSocketUser>,
+    client_socket_id: Option<u32>,
+    soundfont_loaded: bool,
+    // ... additional fields
+}
+```
+
+**Key Features:**
+- **Multi-user Support**: Each connected user has their own audio channel
+- **Real-time Processing**: Low-latency audio synthesis
+- **Effects Processing**: Reverb, chorus, and custom effects
+- **MIDI Integration**: Full MIDI event processing
+
+### Audio Processing Pipeline
+
+```rust
+impl PianoRhythmSynthesizer {
+    pub fn process(&mut self, output: &mut [f32]) {
+        let mut chunks = output.chunks_exact_mut(2);
+        for chunk in &mut chunks {
+            let (mut l, mut r) = self.read_next();
+            self.equalize(&mut l);
+            self.equalize(&mut r);
+            chunk[0] = l;
+            chunk[1] = r;
+        }
+    }
+}
+```
+
+**Processing Steps:**
+1. **Note Generation**: MIDI events converted to audio samples
+2. **Effects Processing**: Apply reverb, chorus, and EQ
+3. **Mixing**: Combine multiple user channels
+4. **Output**: Stereo audio output to Web Audio API
+
+### Soundfont Management
+
+```rust
+pub fn load_soundfont(&mut self, soundfont_data: &[u8]) -> Result<(), String> {
+    match self.synth.load_soundfont(soundfont_data) {
+        Ok(_) => {
+            self.soundfont_loaded = true;
+            Ok(())
+        }
+        Err(e) => Err(format!("Failed to load soundfont: {}", e))
+    }
+}
+```
+
+**Soundfont Features:**
+- **Dynamic Loading**: Runtime soundfont switching
+- **Multiple Formats**: Support for SF2 and custom formats
+- **Fallback System**: Default soundfont when loading fails
+- **Memory Management**: Efficient soundfont memory usage
+
+## 3D Rendering Engine (Bevy)
+
+### Bevy Integration
+
+The 3D renderer uses Bevy Engine for high-performance graphics:
+
+```rust
+pub fn root_app() -> App {
+    let mut app = App::new();
+    
+    app.add_plugins(DefaultPlugins.set(WindowPlugin {
+        primary_window: Some(Window {
+            canvas: Some("#bevy-canvas".to_string()),
+            ..default()
+        }),
+        ..default()
+    }))
+    .add_plugins(CorePlugin)
+    .add_plugins(PianoPlugin)
+    .add_plugins(RoomPlugin);
+    
+    app
+}
+```
+
+**Rendering Features:**
+- **WebGPU/WebGL2**: Hardware-accelerated rendering
+- **ECS Architecture**: Entity-Component-System design
+- **Real-time Updates**: Synchronized with audio events
+- **Cross-platform**: Web and desktop support
+
+### Component System
+
+```rust
+#[derive(Component, Reflect)]
+pub struct PianoKey {
+    pub key_id: u8,
+    pub is_pressed: bool,
+    pub velocity: f32,
+}
+
+#[derive(Component, Reflect)]
+pub struct UserAvatar {
+    pub socket_id: String,
+    pub position: Vec3,
+    pub color: Color,
+}
+```
+
+**Key Components:**
+- `PianoKey` - Individual piano key representation
+- `UserAvatar` - User representation in 3D space
+- `RoomEnvironment` - 3D room environment
+- `AudioVisualizer` - Audio-reactive visual elements
+
+## Protocol Buffer Communication
+
+### Message Definitions
+
+```protobuf
+message AppStateActions {
+  AppStateActions_Action action = 1;
+  AudioSynthActions audioSynthAction = 2;
+  string stringValue = 3;
+  // ... additional fields
+}
+
+message AudioSynthActions {
+  AudioSynthActions_Action action = 1;
+  string socketId = 2;
+  uint32 note = 3;
+  uint32 velocity = 4;
+  // ... additional fields
+}
+```
+
+**Message Types:**
+- `AppStateActions` - Application-level actions
+- `AudioSynthActions` - Audio synthesis commands
+- `AppStateEffects` - State change effects
+- `AppStateEvents` - System events
+
+### Serialization
+
+```rust
+pub fn send_app_action(&mut self, action: AppStateActions) {
+    let bytes = action.write_to_bytes().unwrap();
+    self.dispatch_action_bytes(&bytes);
+}
+```
+
+**Benefits:**
+- **Compact Size**: Binary serialization for efficiency
+- **Type Safety**: Strong typing across language boundaries
+- **Versioning**: Schema evolution support
+- **Cross-platform**: Consistent serialization
+
+## MIDI Integration
+
+### MIDI Event Processing
+
+```rust
+pub trait HandleWebsocketMidiMessage {
+    fn handle_websocket_midi_message(&mut self, data: &[u8]);
+}
+
+impl HandleWebsocketMidiMessage for AppState {
+    fn handle_websocket_midi_message(&mut self, data: &[u8]) {
+        if let Ok(midi_event) = MidiEvent::from_bytes(data) {
+            self.process_midi_event(midi_event);
+        }
+    }
+}
+```
+
+**MIDI Features:**
+- **Real-time Processing**: Low-latency MIDI event handling
+- **Device Management**: Multiple MIDI device support
+- **Event Filtering**: Configurable MIDI event processing
+- **WebSocket Integration**: MIDI over WebSocket protocol
+
+## Memory Management
+
+### Rust Memory Safety
+
+```rust
+// Safe memory management with Rust's ownership system
+pub struct NoteBufferEngine {
+    buffer: Vec<MidiEvent>,
+    capacity: usize,
+}
+
+impl NoteBufferEngine {
+    pub fn add_event(&mut self, event: MidiEvent) {
+        if self.buffer.len() < self.capacity {
+            self.buffer.push(event);
+        }
+    }
+}
+```
+
+**Memory Features:**
+- **Zero-cost Abstractions**: Rust's zero-overhead principles
+- **Memory Safety**: No memory leaks or buffer overflows
+- **Efficient Allocation**: Custom allocators for audio buffers
+- **WASM Optimization**: Optimized for WebAssembly execution
+
+## Error Handling
+
+### Robust Error Management
+
+```rust
+#[derive(Debug)]
+pub enum CoreError {
+    AudioInitializationFailed(String),
+    SoundfontLoadError(String),
+    WebSocketConnectionError(String),
+    MidiDeviceError(String),
+}
+
+impl std::fmt::Display for CoreError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            CoreError::AudioInitializationFailed(msg) => {
+                write!(f, "Audio initialization failed: {}", msg)
+            }
+            // ... other error types
+        }
+    }
+}
+```
+
+**Error Handling Strategy:**
+- **Typed Errors**: Specific error types for different failures
+- **Graceful Degradation**: Fallback mechanisms for non-critical errors
+- **Logging**: Comprehensive error logging and reporting
+- **Recovery**: Automatic recovery from transient failures
+
+## Performance Optimizations
+
+### Audio Performance
+
+```rust
+// Optimized audio processing with SIMD when available
+#[cfg(target_feature = "simd128")]
+fn process_audio_simd(input: &[f32], output: &mut [f32]) {
+    // SIMD-optimized audio processing
+}
+```
+
+**Optimization Techniques:**
+- **SIMD Instructions**: Vectorized audio processing
+- **Memory Pools**: Pre-allocated memory for audio buffers
+- **Lock-free Algorithms**: Concurrent audio processing
+- **Batch Processing**: Efficient bulk operations
+
+### WebAssembly Optimizations
+
+```rust
+// Optimized for WASM compilation
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen]
+pub struct WasmAudioProcessor {
+    processor: AudioProcessor,
+}
+
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen]
+impl WasmAudioProcessor {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Self {
+        Self {
+            processor: AudioProcessor::new(),
+        }
+    }
+}
+```
+
+**WASM Features:**
+- **Size Optimization**: Minimal WASM binary size
+- **Memory Sharing**: Shared memory between JS and WASM
+- **Threading**: Web Workers for parallel processing
+- **Streaming**: Streaming WASM compilation
+
+## Build System
+
+### Cargo Configuration
+
+```toml
+[package]
+name = "pianorhythm_core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wasm-bindgen = "0.2"
+web-sys = "0.3"
+js-sys = "0.3"
+bevy = { version = "0.16", features = ["webgl2"] }
+oxisynth = { path = "./synth/oxisynth" }
+
+[lib]
+crate-type = ["cdylib"]
+```
+
+**Build Scripts:**
+- `build-core-release.sh` - Release build for web
+- `build-bevy-renderer-wasm-webgpu.sh` - 3D renderer build
+- `build-synth-wasm-release.cmd` - Audio synthesizer build
+
+## Testing
+
+### Unit Tests
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_synthesizer_creation() {
+        let options = PianoRhythmSynthesizerDescriptor::default();
+        let synth = PianoRhythmSynthesizer::new(options, None, None, None);
+        assert!(!synth.has_soundfont_loaded());
+    }
+}
+```
+
+**Testing Strategy:**
+- **Unit Tests**: Individual component testing
+- **Integration Tests**: Cross-component testing
+- **Performance Tests**: Audio latency and throughput
+- **WASM Tests**: WebAssembly-specific testing
+
+## Next Steps
+
+- **[Audio System](./audio-system.md)** - Detailed audio architecture
+- **[3D Rendering](./3d-rendering.md)** - Bevy Engine integration
+- **[Protocol Buffers](./protocol-buffers.md)** - Message serialization

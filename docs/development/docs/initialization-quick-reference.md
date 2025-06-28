@@ -1,0 +1,266 @@
+# Initialization System Quick Reference
+
+## Overview
+
+The PianoRhythm initialization system prevents race conditions through a dependency-based state machine. This guide provides quick reference for common development tasks.
+
+> **📖 Full Documentation**: See [Initialization System](./initialization-system.md) for comprehensive technical details and architecture overview.
+
+## Quick Start
+
+### Using the Initialization Service
+
+```typescript
+import { useService } from "solid-services";
+import InitializationService from "~/services/initialization.service";
+import { InitializationStep } from "~/types/initialization.types";
+
+const initService = useService(InitializationService);
+
+// Execute a step
+await initService.executeStep(InitializationStep.MyStep, {
+  execute: async () => {
+    // Your initialization logic here
+  },
+  validate: async () => {
+    // Optional validation
+    return true;
+  }
+});
+
+// Wait for a step to complete
+await initService.waitForStep(InitializationStep.ClientLoaded);
+
+// Check step status
+if (initService.isStepCompleted(InitializationStep.AudioService)) {
+  // Step is complete
+}
+```
+
+## Common Patterns
+
+### Adding a New Initialization Step
+
+1. **Add to enum** (`src/types/initialization.types.ts`):
+```typescript
+export enum InitializationStep {
+  // ... existing steps
+  MyNewStep = "my-new-step"
+}
+```
+
+2. **Define dependencies** (`src/services/initialization.service.ts`):
+```typescript
+const stepDependencies: Record<InitializationStep, InitializationStep[]> = {
+  // ... existing dependencies
+  [InitializationStep.MyNewStep]: [InitializationStep.AudioService],
+};
+```
+
+3. **Execute in app loading** (`src/routes/app-loading.tsx`):
+```typescript
+await initializationService().executeStep(InitializationStep.MyNewStep, {
+  execute: async () => {
+    // Implementation
+    await myService().initialize();
+  },
+  validate: async () => {
+    return myService().isReady();
+  }
+});
+```
+
+### Waiting for Dependencies
+
+```typescript
+// Wait for multiple dependencies
+await Promise.all([
+  initService.waitForStep(InitializationStep.ClientLoaded),
+  initService.waitForStep(InitializationStep.AudioService)
+]);
+
+// Wait with custom timeout
+await initService.waitForStep(InitializationStep.CoreWasm, 60000); // 60 seconds
+```
+
+### Error Handling
+
+```typescript
+try {
+  await initService.executeStep(InitializationStep.MyStep, {
+    execute: async () => {
+      // This might fail
+      await riskyOperation();
+    }
+  });
+} catch (error) {
+  // Handle initialization failure
+  console.error("Step failed:", error);
+}
+```
+
+## Step Dependencies Reference (Refactored Order)
+
+```
+UserGesture
+├── CoreWasm
+│   ├── AppState
+│   │   ├── WebsocketIdentity
+│   │   │   ├── WebsocketConnection
+│   │   │   │   ├── WelcomeEvent
+│   │   │   │   │   ├── ClientLoaded
+│   │   │   │   │   │   ├── AudioService ← Audio service first
+│   │   │   │   │   │   │   ├── SynthEngine
+│   │   │   │   │   │   │   ├── ClientSocketId
+│   │   │   │   │   │   │   │   └── ClientAddedToSynth
+│   │   │   │   │   │   │   │       └── Soundfont ← Soundfont after audio
+│   │   │   │   │   │   │   │           ├── AppSettings
+│   │   │   │   │   │   │   │           │   ├── UsersService
+│   │   │   │   │   │   │   │           │   │   ├── ChatService
+│   │   │   │   │   │   │   │           │   │   │   ├── RoomsService
+│   │   │   │   │   │   │   │           │   │   │   │   ├── MonitorService
+│   │   │   │   │   │   │   │           │   │   │   │   │   └── Complete
+```
+
+## Critical Steps
+
+### ClientAddedToSynth
+**Most important step** - prevents race conditions between synth engine and client socket ID:
+
+```typescript
+await initializationService().executeStep(InitializationStep.ClientAddedToSynth, {
+  execute: async () => {
+    await raceTimeout(until(() => {
+      return appService().clientLoaded() && 
+             appService().getSocketID() && 
+             audioService().clientAdded();
+    }), DEFAULT_SERVICE_TIMEOUT, true, "Client never properly added to synth.");
+  },
+  validate: async () => {
+    return appService().clientLoaded() && 
+           !!appService().getSocketID() && 
+           audioService().clientAdded();
+  }
+});
+```
+
+## Testing
+
+### Unit Test Template
+
+```typescript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { createRoot } from 'solid-js';
+import InitializationService from '~/services/initialization.service';
+import { InitializationStep } from '~/types/initialization.types';
+
+describe('MyInitializationStep', () => {
+  let initService: any;
+
+  beforeEach(() => {
+    createRoot(() => {
+      initService = InitializationService();
+    });
+  });
+
+  it('should execute my step successfully', async () => {
+    const mockExecutor = {
+      execute: vi.fn().mockResolvedValue(undefined)
+    };
+
+    await initService.executeStep(InitializationStep.MyStep, mockExecutor);
+    
+    expect(mockExecutor.execute).toHaveBeenCalled();
+    expect(initService.isStepCompleted(InitializationStep.MyStep)).toBe(true);
+  });
+});
+```
+
+## Debugging
+
+### Enable Debug Logging
+
+```typescript
+// In initialization service config
+const config: InitializationConfig = {
+  enableLogging: true, // Enable detailed logging
+  defaultTimeout: 30000,
+  maxRetries: 3,
+  retryDelay: 1000
+};
+```
+
+### Common Debug Scenarios
+
+1. **Step hanging**: Check timeout configuration and dependencies
+2. **Race conditions**: Verify proper step ordering and dependencies
+3. **Retry failures**: Check error messages and increase retry count if needed
+4. **Validation failures**: Ensure validation logic matches execution results
+
+### Progress Monitoring
+
+```typescript
+// Set up progress callback
+initService.setProgressCallback((step, status, progress) => {
+  console.log(`Step ${step}: ${status} (${progress}%)`);
+});
+
+// Set up error callback
+initService.setErrorCallback((step, error) => {
+  console.error(`Step ${step} failed:`, error);
+});
+```
+
+## Configuration
+
+### Default Settings
+
+```typescript
+const config: InitializationConfig = {
+  defaultTimeout: 30000,  // 30 seconds
+  maxRetries: 3,          // 3 retry attempts
+  retryDelay: 1000,       // 1 second between retries
+  enableLogging: true     // Debug logging enabled
+};
+```
+
+### Custom Timeouts
+
+```typescript
+// Set custom timeout for specific step
+const state = initService.state();
+const stepInfo = state.steps.get(InitializationStep.MyStep);
+if (stepInfo) {
+  stepInfo.timeout = 60000; // 60 seconds
+}
+```
+
+## Best Practices
+
+1. **Always define dependencies** - Never skip dependency declaration
+2. **Use validation** - Add validation for steps with verifiable outcomes
+3. **Handle errors gracefully** - Provide meaningful error messages
+4. **Test thoroughly** - Write unit tests for new steps
+5. **Monitor progress** - Use callbacks for user feedback
+6. **Keep steps atomic** - Each step should do one thing well
+7. **Document dependencies** - Explain why dependencies are needed
+
+## Common Pitfalls
+
+1. **Circular dependencies** - Will cause initialization to hang
+2. **Missing dependencies** - Can cause race conditions
+3. **Overly long steps** - Break down complex operations
+4. **Insufficient error handling** - Always handle potential failures
+5. **Skipping validation** - Can lead to false positive completions
+
+## Performance Tips
+
+1. **Parallel execution** - Independent steps can run in parallel
+2. **Lazy loading** - Only initialize what's needed immediately
+3. **Caching** - Cache expensive initialization results
+4. **Timeouts** - Set appropriate timeouts for network operations
+5. **Progress feedback** - Keep users informed during long operations
+
+---
+
+For complete technical details, see [INITIALIZATION_ARCHITECTURE.md](../INITIALIZATION_ARCHITECTURE.md).
