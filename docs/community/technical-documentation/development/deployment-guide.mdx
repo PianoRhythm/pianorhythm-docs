@@ -1,0 +1,777 @@
+---
+id: deployment-guide
+title: Deployment Guide
+path: ['/community/development/technical-documentation/development/deployment-guide']
+keywords: ['deployment', 'github pages', 'production', 'ci/cd', 'docker', 'monitoring', 'devops', 'infrastructure']
+tags:
+  - deployment
+  - devops
+  - ci-cd
+  - github-pages
+  - docker
+  - production
+  - monitoring
+---
+
+# Deployment Guide
+
+This guide covers the complete deployment process for PianoRhythm, including GitHub Pages deployment, production server setup, CI/CD pipelines, and monitoring strategies.
+
+## Deployment Architecture
+
+```mermaid
+graph TB
+    subgraph "Development"
+        DEV[Local Development]
+        TEST[Testing Environment]
+    end
+    
+    subgraph "CI/CD Pipeline"
+        GHA[GitHub Actions]
+        BUILD[Build Process]
+        DEPLOY[Deployment]
+    end
+    
+    subgraph "Production Environments"
+        GHP[GitHub Pages<br/>Static Site]
+        PROD[Production Server<br/>DigitalOcean]
+        CDN[CDN<br/>Asset Delivery]
+    end
+    
+    subgraph "Infrastructure"
+        MONGO[MongoDB Atlas]
+        REDIS[Redis Cache]
+        MONITOR[Monitoring]
+    end
+    
+    DEV --> GHA
+    TEST --> GHA
+    GHA --> BUILD
+    BUILD --> DEPLOY
+    DEPLOY --> GHP
+    DEPLOY --> PROD
+    PROD --> CDN
+    PROD --> MONGO
+    PROD --> REDIS
+    PROD --> MONITOR
+```
+
+## GitHub Pages Deployment (Current)
+
+### 1. Automatic Deployment
+
+The project automatically deploys to GitHub Pages on every push to the main branch:
+
+```yaml
+# .github/workflows/deploy-pages.yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '19'
+          cache: 'pnpm'
+          
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          target: wasm32-unknown-unknown
+          
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli
+        
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Build Rust core
+        run: |
+          cd pianorhythm_core
+          chmod +x ./build-core-release.sh
+          ./build-core-release.sh
+          
+      - name: Build for production
+        run: pnpm run build:production
+        env:
+          NODE_ENV: production
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+          
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### 2. Build Configuration for GitHub Pages
+
+```typescript
+// app.config.ts - GitHub Pages specific configuration
+const isProduction = mode === "production";
+
+export default defineConfig({
+  server: {
+    preset: "./preset",
+    routeRules: {
+      "/": {
+        prerender: isProduction
+      }
+    },
+    prerender: {
+      crawlLinks: isProduction
+    }
+  },
+  vite: {
+    base: isProduction ? '/pianorhythm-ssr/' : '/',
+    build: {
+      target: "esnext",
+      minify: "esbuild",
+      sourcemap: false
+    }
+  }
+});
+```
+
+### 3. Static Site Generation
+
+```typescript
+// preset/nitro.config.ts - GitHub Pages preset
+export default defineNitroConfig({
+  preset: "github-pages",
+  prerender: {
+    routes: [
+      "/",
+      "/login",
+      "/app-loading"
+    ],
+    crawlLinks: true
+  },
+  nitro: {
+    output: {
+      publicDir: "dist"
+    }
+  }
+});
+```
+
+## Production Server Deployment
+
+### 1. Docker Configuration
+
+```dockerfile
+# Dockerfile
+FROM node:19-alpine AS builder
+
+# Install Rust
+RUN apk add --no-cache curl build-base
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN rustup install nightly
+RUN rustup default nightly
+RUN rustup target add wasm32-unknown-unknown
+RUN cargo install wasm-bindgen-cli
+
+WORKDIR /app
+COPY package*.json pnpm-lock.yaml ./
+RUN npm install -g pnpm
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+# Build Rust core
+RUN cd pianorhythm_core && \
+    chmod +x ./build-core-release.sh && \
+    ./build-core-release.sh
+
+# Build application
+RUN pnpm run build:production
+
+# Production stage
+FROM node:19-alpine AS runtime
+
+RUN npm install -g pnpm
+
+WORKDIR /app
+
+# Copy built application
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+
+# Install production dependencies only
+RUN pnpm install --prod --frozen-lockfile
+
+EXPOSE 3000
+
+CMD ["pnpm", "start"]
+```
+
+### 2. Docker Compose for Development
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PIANORHYTHM_MONGODB_URI=mongodb://mongo:27017/pianorhythm
+      - PIANORHYTHM_SERVER_URL=http://localhost:7000
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - ./logs:/app/logs
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=pianorhythm
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:
+```
+
+### 3. DigitalOcean Deployment
+
+```yaml
+# .github/workflows/deploy-production.yml
+name: Deploy to Production
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            registry.digitalocean.com/pianorhythm/app:latest
+            registry.digitalocean.com/pianorhythm/app:${{ github.event.release.tag_name }}
+          
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          
+      - name: Update Kubernetes deployment
+        run: |
+          doctl kubernetes cluster kubeconfig save pianorhythm-cluster
+          kubectl set image deployment/pianorhythm-app app=registry.digitalocean.com/pianorhythm/app:${{ github.event.release.tag_name }}
+          kubectl rollout status deployment/pianorhythm-app
+```
+
+## Environment Configuration
+
+### 1. Environment Variables
+
+```bash
+# Production environment variables
+NODE_ENV=production
+PORT=3000
+
+# Database
+PIANORHYTHM_MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/pianorhythm
+PIANORHYTHM_MONGODB_API_KEY=your-api-key
+
+# External Services
+PIANORHYTHM_SERVER_URL=https://api.pianorhythm.io
+PR_ASSETS_URL=https://assets.pianorhythm.io
+
+# Authentication
+PIANORHYTHM_GITHUB_ACCESS_TOKEN=your-github-token
+PIANORHYTHM_GITHUB_APP_ID=925579
+
+# Monitoring
+SENTRY_DSN=your-sentry-dsn
+ANALYTICS_URL=your-analytics-url
+
+# Security
+JWT_SECRET=your-jwt-secret
+CORS_ORIGIN=https://pianorhythm.io
+```
+
+### 2. Configuration Management
+
+```typescript
+// src/lib/config.ts
+import { z } from 'zod';
+
+const ConfigSchema = z.object({
+  NODE_ENV: z.enum(['development', 'staging', 'production']),
+  PORT: z.coerce.number().default(3000),
+  MONGODB_URI: z.string().url(),
+  SERVER_URL: z.string().url(),
+  ASSETS_URL: z.string().url(),
+  JWT_SECRET: z.string().min(32),
+});
+
+export const config = ConfigSchema.parse(process.env);
+
+export const isDevelopment = config.NODE_ENV === 'development';
+export const isProduction = config.NODE_ENV === 'production';
+```
+
+## Database Deployment
+
+### 1. MongoDB Atlas Setup
+
+```typescript
+// Database connection for production
+export class ProductionDatabase {
+  private static instance: ProductionDatabase;
+  private client: MongoClient;
+  
+  private constructor() {
+    this.client = new MongoClient(config.MONGODB_URI, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    });
+  }
+  
+  async connect(): Promise<void> {
+    try {
+      await this.client.connect();
+      console.log('✅ Connected to MongoDB Atlas');
+    } catch (error) {
+      console.error('❌ MongoDB connection failed:', error);
+      throw error;
+    }
+  }
+  
+  getDb(name: string = 'pianorhythm'): Db {
+    return this.client.db(name);
+  }
+}
+```
+
+### 2. Database Migrations
+
+```typescript
+// scripts/migrate.ts
+import { MongoClient } from 'mongodb';
+
+const migrations = [
+  {
+    version: 1,
+    name: 'create_indexes',
+    up: async (db: Db) => {
+      await db.collection('users').createIndex({ usertag: 1 }, { unique: true });
+      await db.collection('rooms').createIndex({ name: 1 });
+      await db.collection('sheet_music').createIndex({ title: 'text' });
+    }
+  },
+  {
+    version: 2,
+    name: 'add_user_settings',
+    up: async (db: Db) => {
+      await db.collection('users').updateMany(
+        { settings: { $exists: false } },
+        { $set: { settings: { theme: 'dark', notifications: true } } }
+      );
+    }
+  }
+];
+
+export async function runMigrations(): Promise<void> {
+  const client = new MongoClient(process.env.MONGODB_URI!);
+  await client.connect();
+  
+  const db = client.db();
+  const migrationsCollection = db.collection('migrations');
+  
+  for (const migration of migrations) {
+    const existing = await migrationsCollection.findOne({ version: migration.version });
+    
+    if (!existing) {
+      console.log(`Running migration: ${migration.name}`);
+      await migration.up(db);
+      await migrationsCollection.insertOne({
+        version: migration.version,
+        name: migration.name,
+        appliedAt: new Date()
+      });
+    }
+  }
+  
+  await client.close();
+}
+```
+
+## CDN and Asset Management
+
+### 1. Asset Optimization
+
+```typescript
+// vite.config.ts - Asset optimization
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['solid-js', '@solidjs/router'],
+          audio: ['@core/pkg'],
+          ui: ['@hope-ui/solid']
+        },
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.');
+          const ext = info[info.length - 1];
+          
+          if (/\.(wasm|sf2)$/.test(assetInfo.name)) {
+            return `assets/[name]-[hash][extname]`;
+          }
+          
+          return `assets/[name]-[hash][extname]`;
+        }
+      }
+    },
+    assetsInlineLimit: 0, // Don't inline assets
+    chunkSizeWarningLimit: 1000
+  }
+});
+```
+
+### 2. Service Worker for Caching
+
+```typescript
+// public/sw.js
+const CACHE_NAME = 'pianorhythm-v1';
+const STATIC_ASSETS = [
+  '/',
+  '/login',
+  '/manifest.json',
+  '/pianorhythm_core/pkg/pianorhythm_core.wasm'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(STATIC_ASSETS))
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.url.includes('/api/')) {
+    // Don't cache API requests
+    return;
+  }
+  
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
+  );
+});
+```
+
+## Monitoring and Logging
+
+### 1. Application Monitoring
+
+```typescript
+// src/lib/monitoring.ts
+import * as Sentry from '@sentry/node';
+
+export function initializeMonitoring(): void {
+  if (isProduction) {
+    Sentry.init({
+      dsn: config.SENTRY_DSN,
+      environment: config.NODE_ENV,
+      tracesSampleRate: 0.1,
+    });
+  }
+}
+
+export function logError(error: Error, context?: string): void {
+  console.error(`[${context || 'Unknown'}] Error:`, error);
+  
+  if (isProduction) {
+    Sentry.captureException(error, {
+      tags: { context }
+    });
+  }
+}
+
+export function logPerformance(operation: string, duration: number): void {
+  console.log(`[Performance] ${operation}: ${duration}ms`);
+  
+  if (isProduction && duration > 1000) {
+    Sentry.addBreadcrumb({
+      message: `Slow operation: ${operation}`,
+      level: 'warning',
+      data: { duration }
+    });
+  }
+}
+```
+
+### 2. Health Checks
+
+```typescript
+// src/routes/api/health.ts
+export async function GET(): Promise<Response> {
+  const health = {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    version: process.env.npm_package_version,
+    checks: {
+      database: await checkDatabase(),
+      memory: checkMemory(),
+      uptime: process.uptime()
+    }
+  };
+  
+  const status = Object.values(health.checks).every(check => 
+    typeof check === 'object' ? check.status === 'ok' : true
+  ) ? 200 : 503;
+  
+  return new Response(JSON.stringify(health), {
+    status,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+async function checkDatabase(): Promise<{ status: string; latency?: number }> {
+  try {
+    const start = Date.now();
+    await Database.getInstance().getDb().admin().ping();
+    const latency = Date.now() - start;
+    
+    return { status: 'ok', latency };
+  } catch (error) {
+    return { status: 'error' };
+  }
+}
+
+function checkMemory(): { status: string; usage: NodeJS.MemoryUsage } {
+  const usage = process.memoryUsage();
+  const status = usage.heapUsed / usage.heapTotal > 0.9 ? 'warning' : 'ok';
+  
+  return { status, usage };
+}
+```
+
+## Security Considerations
+
+### 1. HTTPS and Security Headers
+
+```typescript
+// Security middleware
+export const securityMiddleware = createMiddleware({
+  onBeforeResponse: [
+    (event) => {
+      // Security headers
+      setResponseHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+      setResponseHeader("X-Content-Type-Options", "nosniff");
+      setResponseHeader("X-Frame-Options", "DENY");
+      setResponseHeader("X-XSS-Protection", "1; mode=block");
+      setResponseHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+      
+      // CORS for WebAssembly
+      setResponseHeader("Cross-Origin-Embedder-Policy", "require-corp");
+      setResponseHeader("Cross-Origin-Opener-Policy", "same-origin");
+    }
+  ]
+});
+```
+
+### 2. Environment Secrets
+
+```bash
+# Use environment-specific secret management
+# Development: .env files
+# Production: Kubernetes secrets, Docker secrets, or cloud provider secret management
+
+# Example Kubernetes secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pianorhythm-secrets
+type: Opaque
+data:
+  mongodb-uri: <base64-encoded-uri>
+  jwt-secret: <base64-encoded-secret>
+```
+
+## Rollback Strategy
+
+### 1. Blue-Green Deployment
+
+```yaml
+# kubernetes/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pianorhythm-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: pianorhythm
+  template:
+    metadata:
+      labels:
+        app: pianorhythm
+    spec:
+      containers:
+      - name: app
+        image: registry.digitalocean.com/pianorhythm/app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+```
+
+### 2. Automated Rollback
+
+```bash
+#!/bin/bash
+# scripts/rollback.sh
+
+PREVIOUS_VERSION=$(kubectl get deployment pianorhythm-app -o jsonpath='{.metadata.annotations.deployment\.kubernetes\.io/revision}')
+PREVIOUS_VERSION=$((PREVIOUS_VERSION - 1))
+
+echo "Rolling back to revision $PREVIOUS_VERSION"
+
+kubectl rollout undo deployment/pianorhythm-app --to-revision=$PREVIOUS_VERSION
+kubectl rollout status deployment/pianorhythm-app
+
+# Verify rollback
+if kubectl get pods -l app=pianorhythm | grep -q "Running"; then
+  echo "✅ Rollback successful"
+else
+  echo "❌ Rollback failed"
+  exit 1
+fi
+```
+
+## Performance Optimization
+
+### 1. Build Optimization
+
+```typescript
+// Build performance optimizations
+export default defineConfig({
+  build: {
+    target: 'esnext',
+    minify: 'esbuild',
+    cssMinify: true,
+    rollupOptions: {
+      treeshake: true,
+      output: {
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('solid-js')) return 'solid';
+            if (id.includes('@hope-ui')) return 'ui';
+            if (id.includes('protobufjs')) return 'proto';
+            return 'vendor';
+          }
+        }
+      }
+    }
+  }
+});
+```
+
+### 2. Runtime Performance
+
+```typescript
+// Performance monitoring in production
+if (isProduction) {
+  // Monitor Core Web Vitals
+  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+    getCLS(console.log);
+    getFID(console.log);
+    getFCP(console.log);
+    getLCP(console.log);
+    getTTFB(console.log);
+  });
+}
+```
+
+## Next Steps
+
+- **[Backend Services](./backend-services.md)** - Server architecture details
+- **[Testing Guide](./testing-guide.md)** - Testing in production environments
+- **[Development Setup](./development-setup.md)** - Local development environment
