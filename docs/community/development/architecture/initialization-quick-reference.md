@@ -4,7 +4,7 @@
 
 The PianoRhythm initialization system prevents race conditions through a dependency-based state machine. This guide provides quick reference for common development tasks.
 
-> **📖 Full Documentation**: See [Initialization System](./initialization-system.md) for comprehensive technical details and architecture overview.
+> **📖 Full Documentation**: See [Initialization System](initialization-system.md) for comprehensive technical details and architecture overview.
 
 ## Quick Start
 

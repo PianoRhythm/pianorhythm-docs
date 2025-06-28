@@ -406,6 +406,6 @@ mod tests {
 
 ## Next Steps
 
-- **[Audio System](./audio-system.md)** - Detailed audio architecture
+- **[Audio System](audio-system.md)** - Detailed audio architecture
 - **[3D Rendering](./3d-rendering.md)** - Bevy Engine integration
 - **[Protocol Buffers](./protocol-buffers.md)** - Message serialization

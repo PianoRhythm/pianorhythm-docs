@@ -194,7 +194,7 @@ COPY package*.json pnpm-lock.yaml ./
 RUN npm install -g pnpm
 RUN pnpm install --frozen-lockfile
 
-COPY . .
+COPY ../../../development .
 
 # Build Rust core
 RUN cd pianorhythm_core && \

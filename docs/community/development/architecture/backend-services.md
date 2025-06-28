@@ -704,6 +704,6 @@ export class CacheService {
 
 ## Next Steps
 
-- **[WebSocket Communication](./websocket-communication.md)** - Real-time communication details
-- **[Deployment Guide](./deployment-guide.md)** - Production deployment strategies
-- **[Testing Guide](./testing-guide.md)** - Backend testing strategies
+- **[WebSocket Communication](websocket-communication.md)** - Real-time communication details
+- **[Deployment Guide](deployment-guide.md)** - Production deployment strategies
+- **[Testing Guide](testing-guide.md)** - Backend testing strategies

@@ -519,7 +519,7 @@ RUN npm ci --only=production
 FROM node:19-alpine AS runtime
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
-COPY . .
+COPY ../../../development .
 RUN npm run build:production
 
 EXPOSE 3000

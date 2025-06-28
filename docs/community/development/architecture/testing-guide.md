@@ -746,6 +746,6 @@ jobs:
 
 ## Next Steps
 
-- **[Development Setup](./development-setup.md)** - Set up testing environment
-- **[Frontend Architecture](./frontend-architecture.md)** - Understand component structure
-- **[Audio System](./audio-system.md)** - Learn audio testing specifics
+- **[Development Setup](development-setup.md)** - Set up testing environment
+- **[Frontend Architecture](frontend-architecture.md)** - Understand component structure
+- **[Audio System](audio-system.md)** - Learn audio testing specifics

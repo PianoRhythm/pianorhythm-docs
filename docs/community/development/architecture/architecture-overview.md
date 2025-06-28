@@ -291,6 +291,6 @@ const COMMON = {
 
 ## Next Steps
 
-- **[Frontend Architecture](./frontend-architecture.md)** - Detailed SolidJS structure
-- **[Core Business Logic](./core-business-logic.md)** - Rust engine deep dive
-- **[Development Setup](./development-setup.md)** - Getting started guide
+- **[Frontend Architecture](frontend-architecture.md)** - Detailed SolidJS structure
+- **[Core Business Logic](core-business-logic.md)** - Rust engine deep dive
+- **[Development Setup](development-setup.md)** - Getting started guide

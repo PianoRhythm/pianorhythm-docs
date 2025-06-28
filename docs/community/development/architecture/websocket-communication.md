@@ -674,6 +674,6 @@ class RateLimiter {
 
 ## Next Steps
 
-- **[Backend Services](./backend-services.md)** - Server architecture and APIs
-- **[Audio System](./audio-system.md)** - Real-time audio synchronization
-- **[Testing Guide](./testing-guide.md)** - WebSocket testing strategies
+- **[Backend Services](backend-services.md)** - Server architecture and APIs
+- **[Audio System](audio-system.md)** - Real-time audio synchronization
+- **[Testing Guide](testing-guide.md)** - WebSocket testing strategies

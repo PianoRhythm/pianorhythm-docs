@@ -613,6 +613,6 @@ export VITE_BUILD_MODE="fast"
 
 ## Next Steps
 
-- **[Development Setup](./development-setup.md)** - Setting up the build environment
-- **[Deployment Guide](./deployment-guide.md)** - Production build deployment
-- **[Core Business Logic](./core-business-logic.md)** - Understanding Rust components
+- **[Development Setup](development-setup.md)** - Setting up the build environment
+- **[Deployment Guide](deployment-guide.md)** - Production build deployment
+- **[Core Business Logic](core-business-logic.md)** - Understanding Rust components

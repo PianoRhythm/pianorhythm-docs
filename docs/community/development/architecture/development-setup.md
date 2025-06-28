@@ -446,10 +446,10 @@ export default defineConfig({
 
 ### For New Developers
 
-1. **Read Architecture Overview**: Start with [Architecture Overview](./architecture-overview.md)
-2. **Understand Frontend**: Review [Frontend Architecture](./frontend-architecture.md)
-3. **Learn Testing**: Follow [Testing Guide](./testing-guide.md)
-4. **Explore Core Engine**: Study [Core Business Logic](./core-business-logic.md)
+1. **Read Architecture Overview**: Start with [Architecture Overview](architecture-overview.md)
+2. **Understand Frontend**: Review [Frontend Architecture](frontend-architecture.md)
+3. **Learn Testing**: Follow [Testing Guide](testing-guide.md)
+4. **Explore Core Engine**: Study [Core Business Logic](core-business-logic.md)
 
 ### For Contributors
 

@@ -564,4 +564,4 @@ const monitorAudioPerformance = () => {
 
 - **[MIDI Integration](./midi-integration.md)** - MIDI device handling and Web MIDI API
 - **[3D Rendering](./3d-rendering.md)** - Audio-reactive 3D visualization
-- **[Core Business Logic](./core-business-logic.md)** - Rust engine deep dive
+- **[Core Business Logic](core-business-logic.md)** - Rust engine deep dive

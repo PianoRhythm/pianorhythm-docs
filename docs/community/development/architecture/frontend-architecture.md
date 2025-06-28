@@ -535,6 +535,6 @@ test('app service manages client state', () => {
 
 ## Next Steps
 
-- **[Audio System](./audio-system.md)** - Audio processing and synthesis
+- **[Audio System](audio-system.md)** - Audio processing and synthesis
 - **[UI Components](./ui-components.md)** - Component library and design system
-- **[Testing Guide](./testing-guide.md)** - Comprehensive testing strategies
+- **[Testing Guide](testing-guide.md)** - Comprehensive testing strategies
