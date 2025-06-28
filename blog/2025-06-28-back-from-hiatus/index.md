@@ -21,9 +21,11 @@ I'm thrilled to share that I'm back in full development mode, and I have some ex
 
 This upcoming version represents a significant milestone in PianoRhythm's journey. While I can't reveal all the details just yet, I can tell you that v0.10.0 will include:
 
-- (Potential)Performance improvements and bug fixes
+- (Potential) Performance improvements and bug fixes
 - Continued refinements to the audio engine
 - UI/UX improvements
+- Dedicated page for the sheet music repository
+- And more!
 
 I'll be sharing more specific details about the features and improvements as we get closer to the release date.
 

@@ -1,0 +1,77 @@
+name: DigitalOcean Docker Image Publish
+description: Publish a Docker image to Digital Ocean's Container Registry
+branding:
+  icon: 'upload-cloud'
+  color: 'blue'
+
+inputs:
+  image_path:
+    description: Image path in the format registry-name/image-name
+    required: true
+  sha_size:
+    description: Number of characters from the commit SHA
+    required: false
+    default: '8'
+  dockerfile:
+    description: The path + name of the Dockerfile you want to build (-f flag)
+    required: false
+    default: 'Dockerfile'
+  docker_build_context:
+    description: The docker build context (usually '.')
+    required: false
+    default: '.'
+  build_args:
+    description: Build arguments to pass to the Docker build command
+    required: false
+    default: ''
+
+outputs:
+  image_url:
+    description: 'Url of the uploaded image with the SHA tag'
+    value: ${{ steps.image_tags.outputs.sha }}
+  image_latest_url:
+    description: 'Url of the uploaded image with the latest tag'
+    value: ${{ steps.image_tags.outputs.latest }}
+
+runs:
+  using: composite
+  steps:
+    - name: Generate Image Url
+      id: image_url
+      shell: bash
+      run: echo "::set-output name=value::registry.digitalocean.com/${{ inputs.image_path }}"
+
+    - name: Generate Tagged Urls
+      id: image_tags
+      shell: bash
+      run: |
+        SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-${{ inputs.sha_size }})
+        echo "::set-output name=sha::${{ steps.image_url.outputs.value }}:$SHORT_SHA"
+        echo "::set-output name=latest::${{ steps.image_url.outputs.value }}:latest"
+
+    # - name: Build image
+    #   shell: bash
+    #   run: docker build -f ${{ inputs.dockerfile }} -t ${{ steps.image_tags.outputs.sha }} -t ${{ steps.image_tags.outputs.latest }} --build-arg PR_CLIENT_VERSION=0.9.9 ${{ inputs.docker_build_context }}
+
+    - name: Login to registry
+      shell: bash
+      run: doctl registry login --expiry-seconds 600
+      
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.image_tags.outputs.latest }}
+        build-args: |
+          PR_CLIENT_VERSION=${{ env.PR_CLIENT_VERSION }}
+          PR_ASSETS_URL=${{ env.PIANORHYTHM_ASSETS_CDN_URL }}
+          PR_CDN_URL=${{ env.PIANORHYTHM_CDN_URL }}
+          PIANORHYTHM_SERVER_URL=${{ env.PIANORHYTHM_SERVER_URL }}
+          PIANORHYTHM_MONGODB_API_HOST=${{ env.PIANORHYTHM_MONGODB_API_HOST }}
+          PIANORHYTHM_MONGODB_API_DATASOURCE=${{ env.PIANORHYTHM_MONGODB_API_DATASOURCE }}
+          PIANORHYTHM_MONGODB_API_KEY_EXPRESS=${{ secrets.PIANORHYTHM_MONGODB_API_KEY_EXPRESS }}
+            
+    # - name: Upload image to registry
+    #   shell: bash
+    #   run: docker push -a ${{ steps.image_url.outputs.value }}

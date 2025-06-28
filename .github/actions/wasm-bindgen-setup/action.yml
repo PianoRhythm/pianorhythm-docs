@@ -1,0 +1,28 @@
+########################################################################################
+# "Wasm-bindgen setup" composite action for consistent wasm-bindgen installation     #
+#--------------------------------------------------------------------------------------#
+# Usage in workflows steps:                                                           #
+#                                                                                      #
+#      - name: 📥 Setup Wasm-bindgen                                                  #
+#        uses: ./.github/actions/wasm-bindgen-setup                                   #
+#        with:                                                                        #
+#          version: ${{ env.WASM_BINDGEN_VERSION }} # (default from env)             #
+#                                                                                      #
+########################################################################################
+
+name: 'Wasm-bindgen Setup'
+description: 'Install wasm-bindgen with specified version'
+
+inputs:
+  version:
+    description: 'Wasm-bindgen version to install'
+    required: false
+    default: '0.2.100'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 📥 Wasm-bindgen install
+      uses: jetli/wasm-bindgen-action@v0.2.0
+      with:
+        version: ${{ inputs.version }}

@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build (will be created during build)
+build
+
+# Generated files
+.docusaurus
+.cache-loader
+
+# Development files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+LICENSE
+
+# CI/CD
+.github
+
+# Bot related files (not needed for docs)
+bot
+
+# Other build artifacts
+*.log
+.nyc_output
+coverage
+
+# Temporary files
+*.tmp
+*.temp
