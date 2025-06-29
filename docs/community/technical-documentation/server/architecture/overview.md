@@ -1,3 +1,20 @@
+---
+id: architecture-overview
+title: Architecture Overview
+description: High-level system architecture and design principles for PianoRhythm Server
+path: ['/community/development/technical-documentation/server/architecture/overview']
+keywords: ['architecture', 'system design', 'rust', 'actix', 'real-time', 'scalability', 'performance', 'pianorhythm']
+tags:
+  - architecture
+  - system-design
+  - rust
+  - actix
+  - real-time
+  - scalability
+  - performance
+  - server
+---
+
 # Architecture Overview
 
 PianoRhythm Server is designed as a high-performance, real-time multiplayer gaming server built with modern Rust technologies. This document provides a comprehensive overview of the system architecture, design principles, and key components.

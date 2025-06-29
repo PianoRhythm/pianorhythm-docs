@@ -1,3 +1,20 @@
+---
+id: contributing-guidelines
+title: Contributing Guidelines
+description: Code standards, contribution workflow, and collaboration guidelines for PianoRhythm Server
+path: ['/community/development/technical-documentation/server/development/contributing']
+keywords: ['contributing', 'guidelines', 'code-standards', 'workflow', 'collaboration', 'open-source', 'pianorhythm']
+tags:
+  - contributing
+  - guidelines
+  - code-standards
+  - workflow
+  - collaboration
+  - open-source
+  - development
+  - community
+---
+
 # Contributing Guidelines
 
 Welcome to PianoRhythm Server! We appreciate your interest in contributing to our project. This guide outlines the process for contributing code, reporting issues, and collaborating effectively.

@@ -1,3 +1,20 @@
+---
+id: kubernetes-deployment-guide
+title: Kubernetes Deployment Guide
+description: Scalable Kubernetes deployment with manifests, scaling, and production best practices
+path: ['/community/development/technical-documentation/server/deployment/kubernetes']
+keywords: ['kubernetes', 'k8s', 'deployment', 'scaling', 'orchestration', 'production', 'manifests', 'pianorhythm']
+tags:
+  - kubernetes
+  - k8s
+  - deployment
+  - scaling
+  - orchestration
+  - production
+  - manifests
+  - devops
+---
+
 # Kubernetes Deployment Guide
 
 This guide covers deploying PianoRhythm Server on Kubernetes, including configuration, scaling, and production best practices.

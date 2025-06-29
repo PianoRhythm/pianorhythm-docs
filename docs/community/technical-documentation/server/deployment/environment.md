@@ -1,3 +1,20 @@
+---
+id: environment-configuration-guide
+title: Environment Configuration Guide
+description: Configuration management, environment variables, and secrets for all deployment scenarios
+path: ['/community/development/technical-documentation/server/deployment/environment']
+keywords: ['environment', 'configuration', 'variables', 'secrets', 'settings', 'deployment', 'security', 'pianorhythm']
+tags:
+  - environment
+  - configuration
+  - variables
+  - secrets
+  - settings
+  - deployment
+  - security
+  - devops
+---
+
 # Environment Configuration Guide
 
 This guide covers all environment variables, configuration files, and deployment-specific settings for PianoRhythm Server across different environments.

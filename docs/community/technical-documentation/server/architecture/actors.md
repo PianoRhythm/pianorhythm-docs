@@ -1,3 +1,19 @@
+---
+id: actor-system-architecture
+title: Actor System Architecture
+description: Detailed actor system documentation with message flows and supervision strategies
+path: ['/community/development/technical-documentation/server/architecture/actors']
+keywords: ['actors', 'actix', 'concurrency', 'message-passing', 'supervision', 'rust', 'pianorhythm']
+tags:
+  - actors
+  - actix
+  - concurrency
+  - message-passing
+  - supervision
+  - rust
+  - server
+---
+
 # Actor System Architecture
 
 PianoRhythm Server uses the Actix actor framework to implement a robust, concurrent, and scalable architecture. This document details the actor system design, individual actors, and their interactions.

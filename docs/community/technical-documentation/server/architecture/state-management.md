@@ -1,3 +1,19 @@
+---
+id: state-management-architecture
+title: State Management Architecture
+description: Redis-based state management, data models, and performance optimizations
+path: ['/community/development/technical-documentation/server/architecture/state-management']
+keywords: ['state-management', 'redis', 'mongodb', 'caching', 'data-models', 'performance', 'pianorhythm']
+tags:
+  - state-management
+  - redis
+  - mongodb
+  - caching
+  - data-models
+  - performance
+  - server
+---
+
 # State Management Architecture
 
 PianoRhythm Server implements a sophisticated state management system using Redis as the primary state store, with MongoDB for persistent data. This document details the state management architecture, data models, and caching strategies.

@@ -1,3 +1,20 @@
+---
+id: testing-guide
+title: Testing Guide
+description: Comprehensive testing strategy with unit tests, integration tests, and performance testing
+path: ['/community/development/technical-documentation/server/development/testing']
+keywords: ['testing', 'unit-tests', 'integration-tests', 'performance', 'quality-assurance', 'rust', 'pianorhythm']
+tags:
+  - testing
+  - unit-tests
+  - integration-tests
+  - performance
+  - quality-assurance
+  - rust
+  - development
+  - best-practices
+---
+
 # Testing Guide
 
 This guide covers the comprehensive testing strategy for PianoRhythm Server, including unit tests, integration tests, performance tests, and testing best practices.

@@ -1,3 +1,20 @@
+---
+id: rest-api-endpoints
+title: REST API Endpoints
+description: Comprehensive reference for all REST API endpoints in PianoRhythm Server
+path: ['/community/development/technical-documentation/server/api/rest-endpoints']
+keywords: ['rest-api', 'endpoints', 'http', 'authentication', 'users', 'rooms', 'billing', 'reference', 'pianorhythm']
+tags:
+  - rest-api
+  - endpoints
+  - http
+  - authentication
+  - users
+  - rooms
+  - billing
+  - reference
+---
+
 # REST API Endpoints
 
 This document provides a comprehensive reference for all REST API endpoints available in the PianoRhythm Server.
@@ -121,7 +138,7 @@ Update user profile information.
 }
 ```
 
-### GET /api/users/{user_id}
+### GET /api/users/:user_id
 Get public user information.
 
 **Parameters**:
@@ -149,7 +166,7 @@ Get public user information.
 ### POST /api/users/avatar
 Upload user avatar image.
 
-**Headers**: 
+**Headers**:
 - `Authorization: Bearer <token>`
 - `Content-Type: multipart/form-data`
 
@@ -245,7 +262,7 @@ Create new room.
 }
 ```
 
-### GET /api/rooms/{room_id}
+### GET /api/rooms/:room_id
 Get room details.
 
 **Parameters**:
@@ -281,7 +298,7 @@ Get room details.
 }
 ```
 
-### PUT /api/rooms/{room_id}
+### PUT /api/rooms/:room_id
 Update room settings (owner only).
 
 **Headers**: `Authorization: Bearer <token>`
@@ -304,7 +321,7 @@ Update room settings (owner only).
 }
 ```
 
-### DELETE /api/rooms/{room_id}
+### DELETE /api/rooms/:room_id
 Delete room (owner only).
 
 **Headers**: `Authorization: Bearer <token>`

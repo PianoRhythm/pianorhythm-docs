@@ -1,3 +1,20 @@
+---
+id: server-technical-documentation
+title: Server Technical Documentation
+description: Technical documentation for PianoRhythm Server
+path: ['/community/development/technical-documentation/server']
+keywords: ['server', 'documentation', 'technical', 'guides', 'architecture', 'development', 'pianorhythm', 'rust']
+tags:
+  - server
+  - documentation
+  - technical
+  - guides
+  - architecture
+  - development
+  - pianorhythm
+  - rust
+---
+
 # PianoRhythm Server Documentation
 
 Welcome to the comprehensive technical documentation for PianoRhythm Server. This documentation covers all aspects of the server architecture, APIs, deployment, and development.

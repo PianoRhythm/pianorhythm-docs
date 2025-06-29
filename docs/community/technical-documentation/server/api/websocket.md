@@ -1,3 +1,20 @@
+---
+id: websocket-api-documentation
+title: WebSocket API Documentation
+description: Real-time WebSocket communication protocol, message types, and usage patterns
+path: ['/community/development/technical-documentation/server/api/websocket']
+keywords: ['websocket', 'real-time', 'protocol-buffers', 'messaging', 'communication', 'midi', 'chat', 'pianorhythm']
+tags:
+  - websocket
+  - real-time
+  - protocol-buffers
+  - messaging
+  - communication
+  - midi
+  - chat
+  - api
+---
+
 # WebSocket API Documentation
 
 The PianoRhythm WebSocket API enables real-time, bidirectional communication between clients and the server. This document details the WebSocket protocol, message types, and usage patterns.

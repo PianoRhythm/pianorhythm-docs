@@ -1,3 +1,20 @@
+---
+id: api-documentation
+title: API Documentation
+description: API architecture, authentication, and general usage patterns for PianoRhythm Server
+path: ['/community/development/technical-documentation/server/api']
+keywords: ['api', 'rest', 'websocket', 'authentication', 'jwt', 'endpoints', 'integration', 'pianorhythm']
+tags:
+  - api
+  - rest
+  - websocket
+  - authentication
+  - jwt
+  - endpoints
+  - integration
+  - server
+---
+
 # API Documentation
 
 PianoRhythm Server provides both REST and WebSocket APIs for comprehensive client integration. This document covers the API architecture, authentication, and general usage patterns.

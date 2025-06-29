@@ -1,3 +1,19 @@
+---
+id: docker-deployment-guide
+title: Docker Deployment Guide
+description: Containerized deployment with Docker and Docker Compose for PianoRhythm Server
+path: ['/community/development/technical-documentation/server/deployment/docker']
+keywords: ['docker', 'containers', 'deployment', 'docker-compose', 'containerization', 'orchestration', 'pianorhythm']
+tags:
+  - docker
+  - containers
+  - deployment
+  - docker-compose
+  - containerization
+  - orchestration
+  - devops
+---
+
 # Docker Deployment Guide
 
 This guide covers deploying PianoRhythm Server using Docker containers, including single-container deployment and multi-container orchestration with Docker Compose.

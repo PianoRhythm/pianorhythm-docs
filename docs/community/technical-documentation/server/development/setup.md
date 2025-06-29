@@ -1,3 +1,20 @@
+---
+id: development-setup-guide
+title: Development Setup Guide
+description: Local development environment setup with dependencies, tools, and configuration
+path: ['/community/development/technical-documentation/server/development/setup']
+keywords: ['development', 'setup', 'environment', 'rust', 'dependencies', 'tools', 'configuration', 'pianorhythm']
+tags:
+  - development
+  - setup
+  - environment
+  - rust
+  - dependencies
+  - tools
+  - configuration
+  - getting-started
+---
+
 # Development Setup Guide
 
 This guide will help you set up a local development environment for PianoRhythm Server, including all dependencies, tools, and configuration needed for development.
