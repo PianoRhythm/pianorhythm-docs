@@ -11,7 +11,7 @@ if (isStaging) PIANORHYTHM_ENV = "staging";
 
 const isDevelopment = !isProduction && !isStaging;
 
-let host = isDevelopment ? "http://localhost" : "https://docs.pianorhythm.io";
+let host = isDevelopment ? "http://localhost" : "https://pianorhythm.io";
 
 const googleAnalytics = {
   trackingID: 'G-HPWMT1LLDW',
@@ -23,7 +23,7 @@ module.exports = async function createConfigAsync() {
   return {
     title: 'PianoRhythm',
     tagline: 'General documentation',
-    url: host,
+    url: 'https://docs.pianorhythm.io',
     baseUrl: '/',
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
