@@ -321,5 +321,5 @@ message ServerMessage {
 ---
 
 For detailed endpoint documentation, see:
-- [REST Endpoints](./rest-endpoints.md)
-- [WebSocket API](./websocket.md)
+- [REST Endpoints](./rest-endpoints)
+- [WebSocket API](./websocket)

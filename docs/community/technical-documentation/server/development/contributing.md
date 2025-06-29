@@ -93,10 +93,10 @@ Any other relevant information or examples.
 ### Getting Started
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally
-3. **Set up development environment** (see [Development Setup](./setup.md))
+3. **Set up development environment** (see [Development Setup](./setup))
 4. **Create a feature branch** from `develop`
 5. **Make your changes** following our coding standards
-6. **Test thoroughly** (see [Testing Guide](./testing.md))
+6. **Test thoroughly** (see [Testing Guide](./testing))
 7. **Submit a pull request**
 
 ### Branch Naming Convention
