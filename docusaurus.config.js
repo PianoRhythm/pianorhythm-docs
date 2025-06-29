@@ -11,7 +11,7 @@ if (isStaging) PIANORHYTHM_ENV = "staging";
 
 const isDevelopment = !isProduction && !isStaging;
 
-let host = isDevelopment ? "http://localhost" : "https://pianorhythm.io";
+let host = isDevelopment ? "http://localhost" : "https://docs.pianorhythm.io";
 
 const googleAnalytics = {
   trackingID: 'G-HPWMT1LLDW',

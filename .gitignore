@@ -34,3 +34,4 @@ cargo-test-*
 
 qdrant_storage/**
 .idea/**
+.vs/**
