@@ -293,7 +293,7 @@ module.exports = async function createConfigAsync() {
         ],
         algolia: {
           apiKey: '092f02625f6059bbdaeb244b27d88ccb',
-          indexName: 'docs_pianorhythm_io_vkdm8hozh8_pages',
+          indexName: 'documents',
           appId: 'VKDM8HOZH8',
           contextualSearch: true,
         }
