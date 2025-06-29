@@ -24,53 +24,53 @@ Welcome to the comprehensive technical documentation for PianoRhythm Server. Thi
 ### 🏗️ Architecture
 Understanding the system design and core components:
 
-- **[Overview](/architecture/overview)** - High-level system architecture and design principles
-- **[Actor System](/architecture/actors)** - Detailed actor system documentation
-- **[State Management](/architecture/state-management)** - Redis-based state management and caching
+- **[Overview](./architecture/overview)** - High-level system architecture and design principles
+- **[Actor System](./architecture/actors)** - Detailed actor system documentation
+- **[State Management](./architecture/state-management)** - Redis-based state management and caching
 
 ### 🔌 API Reference
 Complete API documentation for integration:
 
-- **[API Overview](/api/)** - API architecture and authentication
-- **[WebSocket API](/api/websocket)** - Real-time WebSocket communication
-- **[REST Endpoints](/api/rest-endpoints)** - HTTP REST API reference
+- **[API Overview](./api/)** - API architecture and authentication
+- **[WebSocket API](./api/websocket)** - Real-time WebSocket communication
+- **[REST Endpoints](./api/rest-endpoints)** - HTTP REST API reference
 
 ### 🚀 Deployment
 Production deployment and operations:
 
-- **[Docker Deployment](/deployment/docker)** - Containerized deployment with Docker
-- **[Kubernetes Deployment](/deployment/kubernetes)** - Scalable Kubernetes deployment
-- **[Environment Configuration](/deployment/environment)** - Configuration management and secrets
+- **[Docker Deployment](./deployment/docker)** - Containerized deployment with Docker
+- **[Kubernetes Deployment](./deployment/kubernetes)** - Scalable Kubernetes deployment
+- **[Environment Configuration](./deployment/environment)** - Configuration management and secrets
 
 ### 💻 Development
 Development guides and best practices:
 
-- **[Development Setup](/development/setup)** - Local development environment setup
-- **[Testing Guide](/development/testing)** - Testing strategies and tools
-- **[Contributing Guidelines](/development/contributing)** - Code standards and contribution workflow
+- **[Development Setup](./development/setup)** - Local development environment setup
+- **[Testing Guide](./development/testing)** - Testing strategies and tools
+- **[Contributing Guidelines](./development/contributing)** - Code standards and contribution workflow
 
 ## 🎯 Quick Navigation
 
 ### For New Developers
-1. Start with [Architecture Overview](/architecture/overview) to understand the system
-2. Follow [Development Setup](/development/setup) to get your environment ready
-3. Review [API Overview](/api/) to understand the interfaces
-4. Check [Testing Guide](/development/testing) to run and write tests
+1. Start with [Architecture Overview](./architecture/overview) to understand the system
+2. Follow [Development Setup](./development/setup) to get your environment ready
+3. Review [API Overview](./api/) to understand the interfaces
+4. Check [Testing Guide](./development/testing) to run and write tests
 
 ### For DevOps Engineers
-1. Review [Docker Deployment](/deployment/docker) for containerization
-2. Study [Kubernetes Deployment](/deployment/kubernetes) for orchestration
-3. Configure [Environment Variables](/deployment/environment) for your setup
+1. Review [Docker Deployment](./deployment/docker) for containerization
+2. Study [Kubernetes Deployment](./deployment/kubernetes) for orchestration
+3. Configure [Environment Variables](./deployment/environment) for your setup
 
 ### For API Consumers
-1. Start with [API Overview](/api/) for authentication and general concepts
-2. Reference [REST Endpoints](/api/rest-endpoints) for HTTP APIs
-3. Study [WebSocket API](/api/websocket) for real-time features
+1. Start with [API Overview](./api/) for authentication and general concepts
+2. Reference [REST Endpoints](./api/rest-endpoints) for HTTP APIs
+3. Study [WebSocket API](./api/websocket) for real-time features
 
 ### For System Architects
-1. Deep dive into [Architecture Overview](/architecture/overview)
-2. Understand [Actor System](/architecture/actors) design patterns
-3. Review [State Management](/architecture/state-management) strategies
+1. Deep dive into [Architecture Overview](./architecture/overview)
+2. Understand [Actor System](./architecture/actors) design patterns
+3. Review [State Management](./architecture/state-management) strategies
 
 ## 🔍 Key Concepts
 
