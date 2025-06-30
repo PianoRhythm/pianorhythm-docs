@@ -1,0 +1,200 @@
+---
+id: sheet-music-page
+title: Sheet Music Page
+path: ['/community/development/technical-documentation/frontend/sheet-music-page']
+keywords: ['sheet music', 'search', 'upload', 'abc notation', 'virtual piano', 'midi', 'audio', 'repository']
+tags:
+  - frontend
+  - sheet-music
+  - search
+  - upload
+  - audio
+  - midi
+---
+
+# Sheet Music Page
+
+The Sheet Music Page (`/sheet-music`) is PianoRhythm's central repository for browsing, searching, and managing sheet music. It provides a comprehensive interface for users to discover, upload, and interact with sheet music content across multiple formats.
+
+## Overview
+
+The sheet music page serves as a searchable repository where users can:
+- Browse and search through available sheet music
+- View detailed information about individual pieces
+- Upload their own sheet music compositions
+- Play and preview sheet music with audio synthesis
+- Filter content by category, difficulty, tags, and other criteria
+- Manage favorites and personal collections
+
+## Page Structure
+
+### Navigation Bar
+- **Logo and Home Link**: Quick navigation back to the main application
+- **Authentication Links**: Login and Register options for unauthenticated users
+- **Upload Button**: Available to authenticated members for uploading new sheet music
+- **User Profile**: Displays current user information and logout options
+
+### Main Content Area
+- **Search Interface**: Prominent search bar with filtering capabilities
+- **Results Grid**: Responsive grid layout displaying sheet music cards
+- **Pagination**: Navigation through multiple pages of results
+- **Detail Modal**: Overlay for viewing individual sheet music details
+
+## Search and Filtering System
+
+### Search Configuration
+The page uses Elastic Search UI with the following search fields:
+- **Title**: Primary search field for sheet music titles
+- **Song Album**: Album or collection information
+- **UUID**: Unique identifier search
+- **Creator Username**: Search by composer/uploader
+
+### Available Facets
+- **Category**: Filter by sheet music type (Virtual Piano, ABC Notation, MusicXML)
+- **Difficulty**: Filter by skill level (Beginner, Intermediate, Advanced, Expert)
+- **Tags**: Genre and style-based filtering
+- **Favorites**: Personal favorites (authenticated users only)
+- **Approval Status**: Admin-only filter for content moderation
+
+### Search Features
+- **Real-time Search**: Results update as you type
+- **Faceted Navigation**: Multiple filter combinations
+- **Sort Options**: Newest/Oldest ordering
+- **Results Per Page**: Configurable display density (9, 18, or 36 items)
+- **URL State Management**: Shareable search URLs
+
+## Sheet Music Display
+
+### Card Layout
+Each sheet music item displays:
+- **Thumbnail**: Default or custom background image
+- **Title**: Primary identifier
+- **Creator**: Username of the uploader
+- **Difficulty Badge**: Color-coded skill level indicator
+- **Category Badge**: Format type indicator
+- **Approval Status**: Visual indicator for moderated content
+
+### Interactive Features
+- **Click to View**: Opens detailed modal view
+- **Hover Effects**: Visual feedback for interactive elements
+- **Multi-select**: Admin users can select multiple items for batch operations
+- **Fade-in Animation**: Smooth loading transitions
+
+## Sheet Music Details Modal
+
+### Information Display
+- **Metadata**: Title, creator, category, difficulty, creation date
+- **Statistics**: View count, favorites count
+- **Tags**: Clickable genre/style tags for related searches
+- **Description**: User-provided details about the piece
+
+### Audio Integration
+- **MIDI Playback**: Built-in audio synthesis for supported formats
+- **Tempo Control**: Adjustable playback speed
+- **Audio Visualization**: Real-time note highlighting during playback
+- **Reverb Effects**: Church preset for enhanced audio experience
+
+### Actions Available
+- **Play/Pause**: Audio playback controls
+- **Add to Favorites**: Personal collection management
+- **Copy to Clipboard**: Share sheet music data
+- **Edit**: Creator and admin modification rights
+- **Delete**: Creator and admin removal rights
+- **Approval Actions**: Admin-only content moderation
+
+## Upload Functionality
+
+### Supported Formats
+- **Virtual Piano**: Custom VP format for piano compositions
+- **ABC Notation**: Standard music notation format
+- **MusicXML**: Industry-standard sheet music format
+
+### Upload Process
+1. **File Selection**: Drag-and-drop or file picker interface
+2. **Metadata Entry**: Title, artist, album, description, tags
+3. **Category Selection**: Automatic detection with manual override
+4. **Privacy Settings**: Public, Unlisted, or Private visibility
+5. **Difficulty Assignment**: Skill level categorization
+6. **Preview**: Real-time rendering and playback testing
+7. **Submission**: Upload to repository with approval workflow
+
+### Validation Features
+- **Format Detection**: Automatic file type recognition
+- **Content Validation**: Ensures proper formatting
+- **Metadata Extraction**: Auto-population from file headers
+- **Preview Rendering**: Visual confirmation before upload
+
+## User Permissions and Access Control
+
+### Public Access
+- Browse approved, public sheet music
+- Search and filter functionality
+- View details and basic information
+- No upload or modification capabilities
+
+### Authenticated Members
+- All public access features
+- Upload new sheet music
+- Manage personal favorites
+- Edit own uploaded content
+- Access to unlisted content in searches
+
+### Elevated Access (Admins/Moderators)
+- All member features
+- Content approval/disapproval workflow
+- Batch operations on multiple items
+- Access to unapproved content
+- Delete any sheet music
+- Advanced filtering options
+
+## Technical Implementation
+
+### Core Services
+- **SheetMusicService**: Main business logic and state management
+- **AudioService**: MIDI synthesis and playback
+- **DisplaysService**: Modal and UI state management
+- **AppService**: User permissions and core functionality
+- **SearchDriver**: Elastic Search UI integration
+
+### Key Components
+- **SearchUIView**: Main search interface component
+- **SheetMusicDetails**: Detail modal component
+- **SheetMusicUpload**: Upload modal component
+- **GenericDisplayCard**: Individual sheet music card component
+
+### Data Flow
+1. **Search Request**: User input triggers search driver
+2. **API Call**: Request sent to `/api/v1/sheet_music/searchDriver`
+3. **Database Query**: MongoDB aggregation pipeline execution
+4. **Result Processing**: Data transformation and filtering
+5. **UI Update**: Reactive state updates trigger re-render
+6. **User Interaction**: Click events open details or trigger actions
+
+### Performance Optimizations
+- **Lazy Loading**: Components loaded on demand
+- **Pagination**: Limited results per page
+- **Caching**: Local storage for user preferences
+- **Debounced Search**: Reduced API calls during typing
+- **Suspense Boundaries**: Graceful loading states
+
+## Audio System Integration
+
+### MIDI Synthesis
+- **Core WASM Integration**: High-performance audio processing
+- **Soundfont Loading**: Default piano soundfont with reverb
+- **Real-time Playback**: Low-latency audio synthesis
+- **Socket Communication**: MIDI data streaming
+
+### ABC Notation Support
+- **ABCJS Integration**: Client-side notation rendering
+- **Audio Synthesis**: Built-in playback capabilities
+- **Visual Highlighting**: Note-by-note playback indication
+- **Tempo Extraction**: Automatic BPM detection
+
+### Virtual Piano Format
+- **Custom Sequencer**: Specialized VP file handling
+- **Track Management**: Multi-track composition support
+- **Tempo Control**: User-adjustable playback speed
+- **Visual Feedback**: Real-time note visualization
+
+The Sheet Music Page represents a comprehensive solution for sheet music management, combining powerful search capabilities with rich audio integration and user-friendly upload workflows.

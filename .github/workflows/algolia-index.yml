@@ -1,0 +1,33 @@
+name: 'Algolia Index'
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "docs/**"
+      - "blog/**"
+      - "changelog/**"
+      - "docusaurus.config.js"
+  workflow_dispatch:
+
+jobs:
+  index-algolia:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 19.2.0
+
+      - name: Install pnpm dependencies
+        uses: ./.github/actions/pnpm-install
+
+      - name: Run Algolia Indexing
+        run: pnpm run algolia-index
+        env:
+          PIANORHYTHM_ENV: ${{ env.PIANORHYTHM_ENV }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}

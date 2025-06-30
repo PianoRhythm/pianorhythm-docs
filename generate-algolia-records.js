@@ -11,9 +11,16 @@ const mkdirp = require('mkdirp');
 const OUTPUT_DIR = './algolia-records';
 const CONTENT_DIRS = [
   { path: './docs', type: 'docs', urlPrefix: '/' },
-  { path: './blog', type: 'blog', urlPrefix: '/blog/' },
-  { path: './changelog', type: 'changelog', urlPrefix: '/changelog/' }
+  { path: './blog', type: 'blog', urlPrefix: '/' },
+  { path: './changelog', type: 'changelog', urlPrefix: '/' }
 ];
+
+let PIANORHYTHM_ENV = (process.env.PIANORHYTHM_ENV || process.env.NODE_ENV || "").toLowerCase();
+if (PIANORHYTHM_ENV && PIANORHYTHM_ENV == "dev" || PIANORHYTHM_ENV == "localhost") PIANORHYTHM_ENV = "development";
+const isStaging = (PIANORHYTHM_ENV) == "staging" || (PIANORHYTHM_ENV) == "stg" || (PIANORHYTHM_ENV) == "stage";
+const isProduction = (PIANORHYTHM_ENV) == "production" || (PIANORHYTHM_ENV) == "prd" || (PIANORHYTHM_ENV) == "prod";
+
+let host = !isProduction && !isStaging ? "http://localhost:4000" : "https://docs.pianorhythm.io";
 
 // Create output directory
 mkdirp.sync(OUTPUT_DIR);
@@ -36,14 +43,17 @@ CONTENT_DIRS.forEach(({ path: contentDir, type, urlPrefix }) => {
       // Generate URL path
       let urlPath = filePath
         .replace(contentDir, '')
+        .replace('docs', '')
         .replace(/\.(md|mdx)$/, '')
-        .replace(/\/index$/, '/');
-      
+        .replace(/\/index$/, '/')
+        .replace(/\\/g, '/'); // Fix backslashes to forward slashes
+
       // Handle special cases for index files
       if (urlPath === '/index') urlPath = '/';
-      
-      const url = urlPrefix + (urlPath.startsWith('/') ? urlPath.substring(1) : urlPath);
-      
+      urlPath = urlPath.replace('index', '');
+
+      const url = (urlPrefix + (urlPath.startsWith('/') ? urlPath.substring(1) : urlPath)).replace(/\\/g, '/');
+
       // Clean content
       const plainText = removeMd(content)
         .replace(/\s+/g, ' ')
@@ -80,6 +90,7 @@ CONTENT_DIRS.forEach(({ path: contentDir, type, urlPrefix }) => {
       if (data.category) {
         keywords.push(data.category);
       }
+
       if (data.categories && Array.isArray(data.categories)) {
         keywords = keywords.concat(data.categories);
       }
@@ -92,8 +103,12 @@ CONTENT_DIRS.forEach(({ path: contentDir, type, urlPrefix }) => {
           objectID: objectID++,
           title: data.title || 'Untitled',
           description: description,
+          docusaurus_tag: "docs-default-current",
+          language: "en",
+          lang: "en",
+          version: "current",
           content: chunk,
-          url: url,
+          url: host + url,
           type: type,
           tags: data.tags || [],
           keywords: keywords,

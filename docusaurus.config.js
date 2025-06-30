@@ -293,9 +293,20 @@ module.exports = async function createConfigAsync() {
         ],
         algolia: {
           apiKey: '092f02625f6059bbdaeb244b27d88ccb',
-          indexName: 'documents',
+          indexName: isDevelopment ? 'documents_dev' : 'documents',
           appId: 'VKDM8HOZH8',
-          contextualSearch: true,
+          contextualSearch: false,
+          replaceSearchResultPathname: {
+            from: '/',
+            to: '/',
+          },
+          searchParameters: {
+            attributesToRetrieve: ["title", "url", "content", "description", "hierarchy", "type"],
+            attributesToSnippet: ["content:10"],
+            attributesToHighlight: ["content", "hierarchy"],
+            // highlightPreTag: '<span class="algolia-docsearch-suggestion--highlight">',
+            // highlightPostTag: "</span>",
+          }
         }
       }),
 
