@@ -31,7 +31,14 @@ module.exports = {
             'guides/instrument-dock/channel-parameters'
           ],
         },
-        'guides/sheet-music/sheetmusic',
+        {
+          type: 'category',
+          label: 'Sheet Music',
+          link: { type: 'doc', id: 'guides/sheet-music/sheet-music' },
+          items: [
+            'guides/sheet-music/sheet-music-page',
+          ]
+        },
         {
           type: 'category',
           label: 'MIDI Player',

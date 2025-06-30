@@ -12,6 +12,8 @@ tags:
   - midi
 ---
 
+import BaseScreenShot from '@site/src/components/BaseScreenShot';
+
 # Sheet Music Page
 
 The Sheet Music Page (`/sheet-music`) is PianoRhythm's central repository for browsing, searching, and managing sheet music. It provides a comprehensive interface for users to discover, upload, and interact with sheet music content across multiple formats.
@@ -34,11 +36,15 @@ The sheet music page serves as a searchable repository where users can:
 - **Upload Button**: Available to authenticated members for uploading new sheet music
 - **User Profile**: Displays current user information and logout options
 
+<BaseScreenShot version={"0.10.0"} src={"/img/guide/sheet-music/36cf352c261b7e9164f9ca444f6dfba0.png"} />
+
 ### Main Content Area
 - **Search Interface**: Prominent search bar with filtering capabilities
 - **Results Grid**: Responsive grid layout displaying sheet music cards
 - **Pagination**: Navigation through multiple pages of results
 - **Detail Modal**: Overlay for viewing individual sheet music details
+
+<BaseScreenShot version={"0.10.0"} src={"/img/guide/sheet-music/6d837515666fd139b48cd3f210fbb96c.png"} />
 
 ## Search and Filtering System
 
@@ -55,6 +61,8 @@ The page uses Elastic Search UI with the following search fields:
 - **Tags**: Genre and style-based filtering
 - **Favorites**: Personal favorites (authenticated users only)
 - **Approval Status**: Admin-only filter for content moderation
+
+<BaseScreenShot version={"0.10.0"} src={"/img/guide/sheet-music/42b04b43b313293be246d64ac90fb7de.png"} />
 
 ### Search Features
 - **Real-time Search**: Results update as you type
@@ -74,6 +82,8 @@ Each sheet music item displays:
 - **Category Badge**: Format type indicator
 - **Approval Status**: Visual indicator for moderated content
 
+<BaseScreenShot version={"0.10.0"} src={"/img/guide/sheet-music/e8529661e6f5696456648dc6fe9fac91.png"} />
+
 ### Interactive Features
 - **Click to View**: Opens detailed modal view
 - **Hover Effects**: Visual feedback for interactive elements
@@ -87,6 +97,8 @@ Each sheet music item displays:
 - **Statistics**: View count, favorites count
 - **Tags**: Clickable genre/style tags for related searches
 - **Description**: User-provided details about the piece
+
+<BaseScreenShot version={"0.10.0"} src={"/img/guide/sheet-music/3b51d7af7cb96880792951755cf9fbda.png"} />
 
 ### Audio Integration
 - **MIDI Playback**: Built-in audio synthesis for supported formats
@@ -190,6 +202,8 @@ Each sheet music item displays:
 - **Audio Synthesis**: Built-in playback capabilities
 - **Visual Highlighting**: Note-by-note playback indication
 - **Tempo Extraction**: Automatic BPM detection
+
+<BaseScreenShot version={"0.10.0"} src={"/img/guide/sheet-music/512ff0f22f7f5c83e7014f385f33dff0.png"} />
 
 ### Virtual Piano Format
 - **Custom Sequencer**: Specialized VP file handling
