@@ -508,23 +508,6 @@ self.addEventListener('install', (event) => {
       .then(cache => cache.addAll(STATIC_ASSETS))
   );
 });
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.url.includes('/api/')) {
-    // Don't cache API requests
-    return;
-  }
-  
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
-});
 ```
 
 ## Monitoring and Logging

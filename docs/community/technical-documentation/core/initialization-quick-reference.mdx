@@ -121,17 +121,17 @@ UserGesture
 │   ├── AppState
 │   │   ├── WebsocketIdentity
 │   │   │   ├── WebsocketConnection
-│   │   │   │   ├── WelcomeEvent
-│   │   │   │   │   ├── ClientLoaded
-│   │   │   │   │   │   ├── AudioService ← Audio service first
-│   │   │   │   │   │   │   ├── SynthEngine
-│   │   │   │   │   │   │   ├── ClientSocketId
-│   │   │   │   │   │   │   │   └── ClientAddedToSynth
-│   │   │   │   │   │   │   │       └── Soundfont ← Soundfont after audio
-│   │   │   │   │   │   │   │           ├── AppSettings
-│   │   │   │   │   │   │   │           │   ├── UsersService
-│   │   │   │   │   │   │   │           │   │   ├── ChatService
-│   │   │   │   │   │   │   │           │   │   │   ├── RoomsService
+│   │   │   │   ├── AudioService ← Audio service before WelcomeEvent
+│   │   │   │   │   ├── SynthEngine
+│   │   │   │   │   │   ├── WelcomeEvent ← WelcomeEvent after audio setup
+│   │   │   │   │   │   │   ├── ClientLoaded
+│   │   │   │   │   │   │   │   ├── ClientSocketId
+│   │   │   │   │   │   │   │   │   └── ClientAddedToSynth
+│   │   │   │   │   │   │   │   │       └── Soundfont ← Soundfont after audio
+│   │   │   │   │   │   │   │   │           ├── AppSettings
+│   │   │   │   │   │   │   │   │           │   ├── UsersService
+│   │   │   │   │   │   │   │   │           │   │   ├── ChatService
+│   │   │   │   │   │   │   │   │           │   │   │   ├── RoomsService
 │   │   │   │   │   │   │   │           │   │   │   │   ├── MonitorService
 │   │   │   │   │   │   │   │           │   │   │   │   │   └── Complete
 ```
