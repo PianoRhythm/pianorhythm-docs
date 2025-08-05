@@ -19,11 +19,11 @@ I know this might have been frustrating for some of you who were eagerly waiting
 
 ## What's Coming: v0.10.0
 
-I'm thrilled to share that I'm back in full development mode, and I have some exciting news: **PianoRhythm v0.10.0 is planned for release around August 2025!**
+I'm thrilled to share that I'm back in full development mode, and I have some exciting news: **PianoRhythm v0.10.0 is planned for release around September 2025!**
 
 This upcoming version represents a significant milestone in PianoRhythm's journey. While I can't reveal all the details just yet, I can tell you that v0.10.0 will include:
 
-- (Potential) Performance improvements and bug fixes
+- (Potential) Performance improvements (new graphics engine) and bug fixes
 - Continued refinements to the audio engine
 - UI/UX improvements
 - Dedicated page for the sheet music repository
