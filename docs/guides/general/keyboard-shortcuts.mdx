@@ -1,0 +1,182 @@
+# Keyboard Shortcuts
+
+PianoRhythm provides extensive keyboard shortcuts to enhance your playing experience and streamline navigation. This guide covers all available shortcuts and their functionalities.
+
+## Global Application Shortcuts
+
+These shortcuts work throughout the application and provide quick access to main features:
+
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| **F1** | Toggle Instrument Selection | Opens/closes the instrument selection panel |
+| **F2** | Toggle MIDI I/O Display | Opens/closes MIDI input/output configuration |
+| **F3** | Toggle Chat Messages | Shows/hides the chat messages panel |
+| **F5** | Toggle Metronome | Starts/stops the metronome |
+| **F6** | Toggle Keyboard Mapping Overlay | Shows/hides keyboard-to-piano key mapping |
+| **F7** | Toggle Sheet Music Viewer | Opens/closes the sheet music viewer |
+| **F8** | Toggle Scene Widgets | Shows/hides scene control widgets |
+| **F9** | Toggle Shortcut Bindings Display | Opens the keyboard shortcuts settings |
+| **F10** | Toggle Settings Display | Opens/closes the main settings panel |
+| **F12** | Debug Stats | Shows/hides debug information and statistics |
+
+## Audio & Performance Controls
+
+These shortcuts control audio playback and performance parameters:
+
+### Sustain Controls
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| **Space** | Activate Sustain | Hold to sustain notes, release to stop sustain |
+| **Backspace** | Toggle Sustain | Toggles sustain on/off (sticky mode) |
+
+> **Note**: Sustain shortcuts work with modifier keys (Shift, Option/Alt) for additional flexibility.
+
+### Transpose Controls
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| **Insert** | Transpose Up | Increases transpose by one semitone |
+| **Delete** | Transpose Down | Decreases transpose by one semitone |
+| *No default* | Reset Transpose | Resets transpose to default (0) |
+
+### Octave Controls
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| **Home** | Octave Up | Increases octave by one |
+| **End** | Octave Down | Decreases octave by one |
+| *No default* | Reset Octave | Resets octave to default |
+
+### Channel & Instrument Controls
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| *No default* | Reset Channels to Default | Resets all channels to default settings |
+| *No default* | Reset Instruments | Clears all channel instruments |
+
+## Display & UI Controls
+
+Control various UI elements and modal windows:
+
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| **`** (Backtick) | Toggle Instrument Dock | Shows/hides the instrument dock panel |
+| *No default* | Toggle Sheet Music Upload | Opens/closes sheet music upload modal |
+| *No default* | Toggle Sheet Music Repository | Opens/closes sheet music repository |
+| *No default* | Open New Room Modal | Opens the new room creation dialog |
+
+## Chat & Communication
+
+Shortcuts for chat and communication features:
+
+| Shortcut | Function | Description |
+|----------|----------|-------------|
+| **Enter** | Toggle Chat Bar Focus | Focuses the chat input field |
+| *No default* | Minimize/Maximize Chat | Toggles chat window size |
+
+## Piano Playing
+
+### Keyboard Layouts
+
+PianoRhythm supports multiple keyboard layouts for playing piano:
+
+#### VP (Virtual Piano) Layout
+The default layout that maps QWERTY keys to piano keys in a logical arrangement:
+
+**Lower Octave (Numbers Row)**:
+- `1-9, 0` → Piano keys starting from C
+
+**Middle Octave (QWERTY Row)**:
+- `Q W E R T Y U I O P` → Piano keys
+
+**Upper Octave (ASDF Row)**:
+- `A S D F G H J K L` → Piano keys
+
+**Lowest Octave (ZXCV Row)**:
+- `Z X C V B N M` → Piano keys
+
+#### MPP (Multiplayer Piano) Layout
+Alternative layout compatible with Multiplayer Piano:
+- Different key mapping optimized for specific playing styles
+
+#### Custom Layout
+- Users can create custom key mappings
+- Accessible through Settings → Input → Custom Keyboard Layout
+
+### Piano Key Behavior
+
+- **Key Press**: Plays note on (MIDI note on)
+- **Key Release**: Stops note (MIDI note off) 
+- **Shift Key**: Can be configured for auto note-off behavior
+- **Ctrl Key**: Can be configured to lower octave while held
+- **Caps Lock**: Can be used as a modifier for MIDI-to-QWERTY conversion
+
+## Customizing Shortcuts
+
+### Accessing Shortcut Settings
+
+1. Press **F9** or go to Settings → Input → Keyboard Shortcuts
+2. Click on any shortcut to modify its key binding
+3. Press the desired key combination
+4. Save changes
+
+### Shortcut Rules
+
+- Most shortcuts are disabled when typing in input fields
+- Piano playing shortcuts only work when the play area is focused
+- Shortcuts are disabled while editing keybindings
+- Some shortcuts support modifier keys (Shift, Ctrl, Alt)
+
+### Ignored Elements
+
+Shortcuts are automatically disabled when focus is on:
+- Input fields (`<input>`)
+- Text areas (`<textarea>`)
+- Select dropdowns (`<select>`)
+- Editable content areas
+
+## Advanced Features
+
+### Modifier Key Support
+
+Many shortcuts support modifier keys for enhanced functionality:
+- **Shift + Shortcut**: Alternative behavior
+- **Ctrl + Shortcut**: System-level behavior (some reserved for browser)
+- **Alt/Option + Shortcut**: Extended functionality
+
+### Browser Shortcut Conflicts
+
+The application prevents conflicts with common browser shortcuts:
+- **Ctrl+A** (Select All) - Preserved
+- **Ctrl+C** (Copy) - Preserved  
+- **Ctrl+V** (Paste) - Preserved
+- **Ctrl+X** (Cut) - Preserved
+- Other Ctrl combinations are intercepted to prevent browser actions
+
+### Mobile Considerations
+
+- Touch events are handled separately from keyboard shortcuts
+- Some shortcuts may not be available on mobile devices
+- Virtual keyboards may affect shortcut availability
+
+## Troubleshooting
+
+### Shortcuts Not Working
+
+1. **Check Focus**: Ensure the play area is focused for piano shortcuts
+2. **Modal Windows**: Close any open modal windows that might intercept shortcuts
+3. **Input Fields**: Make sure you're not typing in an input field
+4. **Keybinding Mode**: Exit keybinding edit mode if active
+
+### Conflicting Shortcuts
+
+1. **Browser Extensions**: Some extensions may intercept shortcuts
+2. **System Shortcuts**: OS-level shortcuts take precedence
+3. **Custom Bindings**: Check for duplicate custom key assignments
+
+### Performance Impact
+
+- Shortcuts are optimized for minimal performance impact
+- Key repeat events are filtered for most shortcuts
+- Audio shortcuts respect the current audio context state
+
+---
+
+*For more information about customizing your PianoRhythm experience, see the [Settings Guide](../frontend/ui-components.mdx) and [Audio System Documentation](../frontend/audio-system.mdx).*
