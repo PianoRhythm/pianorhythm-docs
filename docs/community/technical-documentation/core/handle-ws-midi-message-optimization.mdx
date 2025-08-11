@@ -68,7 +68,7 @@ pub fn calculate_note_timing_optimized(
 
 ### Optimized message handler (implemented but not yet wired)
 The optimized handler batches notes and clamps total delay to reasonable bounds. Differences vs the earlier draft:
-- ScheduledNote.socket_id_hash is Option<u32>
+- ScheduledNote.socket_id_hash is `Option<u32>`
 - base_time is set to the wall-clock snapshot
 
 <augment_code_snippet path="pianorhythm_core/core/src/midi/mod.rs" mode="EXCERPT">
