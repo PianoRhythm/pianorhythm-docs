@@ -95,33 +95,48 @@ CONTENT_DIRS.forEach(({ path: contentDir, type, urlPrefix }) => {
         keywords = keywords.concat(data.categories);
       }
       
-      // Create chunks of content for better search results
+      const title = data.title || 'Untitled';
+      const lvl0 = type.charAt(0).toUpperCase() + type.slice(1);
+      const hierarchy = {
+        lvl0,
+        lvl1: title,
+        lvl2: null,
+        lvl3: null,
+        lvl4: null,
+        lvl5: null,
+      };
+      const baseRecord = {
+        title,
+        description,
+        docusaurus_tag: 'docs-default-current',
+        language: 'en',
+        lang: 'en',
+        version: 'current',
+        url: host + url,
+        contentType: type,
+        tags: data.tags || [],
+        keywords,
+        hierarchy,
+        weight: getWeight(type),
+      };
+
+      // Title record — DocSearch renders this as the bold page-title hit.
+      records.push({
+        ...baseRecord,
+        objectID: objectID++,
+        type: 'lvl1',
+        content: null,
+      });
+
+      // Content records — one per chunk, rendered as snippet text.
       const contentChunks = chunkContent(plainText, 300);
-      
       contentChunks.forEach((chunk, i) => {
         records.push({
+          ...baseRecord,
           objectID: objectID++,
-          title: data.title || 'Untitled',
-          description: description,
-          docusaurus_tag: "docs-default-current",
-          language: "en",
-          lang: "en",
-          version: "current",
+          type: 'content',
           content: chunk,
-          url: host + url,
-          type: type,
-          tags: data.tags || [],
-          keywords: keywords,
-          hierarchy: {
-            lvl0: type.charAt(0).toUpperCase() + type.slice(1),
-            lvl1: data.title || 'Untitled',
-            lvl2: null,
-            lvl3: null,
-            lvl4: null,
-            lvl5: null
-          },
-          weight: getWeight(type),
-          chunkIndex: i
+          chunkIndex: i,
         });
       });
       

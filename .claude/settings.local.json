@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node generate-algolia-records.js)",
+      "Bash(node *)"
+    ]
+  }
+}
