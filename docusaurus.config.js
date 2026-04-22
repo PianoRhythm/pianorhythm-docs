@@ -13,6 +13,20 @@ const isDevelopment = !isProduction && !isStaging;
 
 let host = isDevelopment ? "http://localhost" : "https://pianorhythm.io";
 
+const pkg = require('./package.json');
+const baseVersion = pkg.version;
+const buildNumber = process.env.DOCS_BUILD_NUMBER || '0';
+const docsVersion = process.env.DOCS_VERSION || `${baseVersion}+build.${buildNumber}`;
+const buildTime = process.env.DOCS_BUILD_TIME || new Date().toISOString();
+const commitSha = (process.env.DOCS_COMMIT_SHA || process.env.GITHUB_SHA || '').slice(0, 7);
+
+function formatBuildTime(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toISOString().replace('T', ' ').replace(/\.\d+Z$/, ' UTC');
+}
+const buildInfoHtml = `<div class="docs-build-info">v${docsVersion}${commitSha ? ` · ${commitSha}` : ''} · built ${formatBuildTime(buildTime)}</div>`;
+
 const googleAnalytics = {
   trackingID: 'G-HPWMT1LLDW',
   anonymizeIP: true,
@@ -30,6 +44,13 @@ module.exports = async function createConfigAsync() {
     favicon: 'img/favicon.ico',
     organizationName: 'pianorhythm',
     projectName: 'pianorhythm',
+
+    customFields: {
+      version: docsVersion,
+      buildTime,
+      commitSha,
+      buildNumber,
+    },
 
     future: {
       v4: false, // Improve compatibility with the upcoming Docusaurus v4
@@ -267,7 +288,7 @@ module.exports = async function createConfigAsync() {
               ],
             },
           ],
-          copyright: `Copyright © ${new Date().getFullYear()} <b>PianoRhythm, LLC.</b> Built with Docusaurus.`,
+          copyright: `Copyright © ${new Date().getFullYear()} <b>PianoRhythm, LLC.</b> Built with Docusaurus.${buildInfoHtml}`,
         },
         metadata: [
           {

@@ -12,6 +12,14 @@
   /*font-size: large;*/
 }
 
+.docs-build-info {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  font-family: var(--ifm-font-family-monospace);
+  letter-spacing: 0.02em;
+}
+
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #363942;

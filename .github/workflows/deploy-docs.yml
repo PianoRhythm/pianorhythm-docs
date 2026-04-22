@@ -33,13 +33,28 @@ jobs:
       - name: 📥 PNPM install
         uses: ./.github/actions/pnpm-install
 
+      - name: Compute docs version
+        id: version
+        run: |
+          BASE=$(node -p "require('./package.json').version")
+          BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
+          VERSION="${BASE}+build.${BUILD_NUMBER}"
+          BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "build_number=${BUILD_NUMBER}" >> $GITHUB_OUTPUT
+          echo "build_time=${BUILD_TIME}" >> $GITHUB_OUTPUT
+          echo "Docs version: ${VERSION} (built ${BUILD_TIME})"
+
       - name: Generate build cache key
         id: build-cache-key
         run: |
-          # Create a hash of all files that affect the build output
+          # Create a hash of all files that affect the build output.
+          # Version is included so each deployment produces a fresh build with
+          # accurate version/build-time metadata embedded in the home page.
           CONTENT_HASH=$(find docs blog src static changelog docusaurus.config.js sidebars.js package.json pnpm-lock.yaml -type f -exec sha256sum {} \; 2>/dev/null | sort | sha256sum | cut -d' ' -f1)
-          echo "hash=$CONTENT_HASH" >> $GITHUB_OUTPUT
-          echo "Build content hash: $CONTENT_HASH"
+          FULL_HASH=$(echo "${CONTENT_HASH}-${{ steps.version.outputs.version }}" | sha256sum | cut -d' ' -f1)
+          echo "hash=$FULL_HASH" >> $GITHUB_OUTPUT
+          echo "Build content hash: $FULL_HASH"
 
       - name: Cache build output
         id: build-cache
@@ -52,6 +67,11 @@ jobs:
 
       - name: Build Docs
         if: steps.build-cache.outputs.cache-hit != 'true'
+        env:
+          DOCS_VERSION: ${{ steps.version.outputs.version }}
+          DOCS_BUILD_NUMBER: ${{ steps.version.outputs.build_number }}
+          DOCS_BUILD_TIME: ${{ steps.version.outputs.build_time }}
+          DOCS_COMMIT_SHA: ${{ github.sha }}
         run: pnpm run build
 
       - name: Verify build output exists
@@ -78,3 +98,14 @@ jobs:
         with:
           image_path: pianorhythm/docs
           dockerfile: docs.Dockerfile
+
+      - name: Trigger DO App redeploy
+        run: |
+          APP_ID=$(doctl apps list --format ID,Spec.Name --no-header | awk '$2 == "pianorhythm-docs" { print $1 }')
+          if [ -z "$APP_ID" ]; then
+            echo "Error: could not resolve DO app ID for 'pianorhythm-docs'"
+            doctl apps list --format ID,Spec.Name --no-header
+            exit 1
+          fi
+          echo "Redeploying app $APP_ID"
+          doctl apps create-deployment "$APP_ID" --force-rebuild --wait
