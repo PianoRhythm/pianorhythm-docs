@@ -20,7 +20,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  index-algolia:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 19.2.0
+
+      - name: 📥 PNPM install
+        uses: ./.github/actions/pnpm-install
+
+      - name: Run Algolia Indexing
+        run: pnpm run algolia-index
+        env:
+          PIANORHYTHM_ENV: production
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
+
   build-docs:
+    needs: index-algolia
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
@@ -98,14 +120,3 @@ jobs:
         with:
           image_path: pianorhythm/docs
           dockerfile: docs.Dockerfile
-
-      - name: Trigger DO App redeploy
-        run: |
-          APP_ID=$(doctl apps list --format ID,Spec.Name --no-header | awk '$2 == "pianorhythm-docs" { print $1 }')
-          if [ -z "$APP_ID" ]; then
-            echo "Error: could not resolve DO app ID for 'pianorhythm-docs'"
-            doctl apps list --format ID,Spec.Name --no-header
-            exit 1
-          fi
-          echo "Redeploying app $APP_ID"
-          doctl apps create-deployment "$APP_ID" --force-rebuild --wait
