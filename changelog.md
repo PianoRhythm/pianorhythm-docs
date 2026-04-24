@@ -1,6 +1,46 @@
 # PianoRhythm Changelog
 
 <!----------------------------------------------->
+## 0.9.10 (2026-04-22)
+
+This release brings a smoother startup experience, a new in-app help assistant, a refreshed sound engine, plenty of desktop polish, and a long list of audio and stage fixes.
+
+{/* truncate */}
+
+#### :rocket: New Features
+  - **In-App HelpBot** Ask for help and the assistant can now guide you directly — including opening the right Settings panel for you instead of just telling you where to click.
+  - **Better Loading Screen** The startup loading screen now shows what the app is actually doing (downloading soundfont, connecting, loading stage, …) and, if something goes wrong, tells you which step failed instead of a generic error.
+  - **GitHub Issues View** ([#27](https://github.com/PianoRhythm/pianorhythm/issues/27)) You can now see what's being worked on or recently fixed from inside the app, grouped by status.
+  - **Soundfonts List** ([PRFP-1241]) A new dedicated browser for picking soundfonts, replacing the old cramped inline list.
+
+#### :smile: Enhancements
+  - **New Sound Engine** We've moved to a new synthesizer with improved chorus and reverb for richer, cleaner audio across all instruments.
+  - **Lower Latency By Default** Low-latency audio (AudioWorklet) is now on out of the box, so there's less delay between pressing a key and hearing the note.
+  - **Faster, Smoother Startup** ([PRFP-1238], [PRFP-1230], [PRFP-1232]) App startup and the in-room experience have been tuned for better performance and stability, especially on lower-end machines.
+  - **Updated Desktop App** The desktop app is now on the latest stable Tauri release, bringing better window behavior, faster updates, and more reliable system integration.
+  - **Chat Now Shows Emojis Correctly** ([#21](https://github.com/PianoRhythm/pianorhythm/pull/21)) Emojis typed in chat now show up the same everywhere instead of being mangled by some clients.
+  - **MIDI Settings Have Their Own Section** ([#9](https://github.com/PianoRhythm/pianorhythm/issues/9)) MIDI options have moved out of the Soundfont settings into a dedicated MIDI group so they're easier to find.
+  - **Clearer Room Stage Tooltip** The "New Room" modal now better explains what the stage option does.
+  - **Polished "New Room" Modal** ([PRFP-1231]) Tidied up validation and layout when creating a room.
+  - **Friendlier Error Messages** ([PRFP-1234]) Login and error screens now use clearer, more helpful wording.
+  - **More Detailed Debug Stats** ([PRFP-1235]) The in-app debug overlay shows more useful info when diagnosing audio or performance issues.
+  - **Improved MIDI Device Handling** ([PRFP-1227]) Better behavior when connecting, switching, or reconnecting MIDI devices.
+  - **Revamped Release Notes** What's New / release notes have been redesigned and are easier to read.
+  - **Faster Downloads** The app now ships as a smaller bundle, so first load and updates are quicker.
+
+#### :bug: Bug Fixes
+  - **Pitch Bend Broadcast** ([#5](https://github.com/PianoRhythm/pianorhythm/issues/5)) Fixed pitch-bend events not being sent to other players in the room.
+  - **Rain Sound Effect Looping** ([#4](https://github.com/PianoRhythm/pianorhythm/issues/4)) The rain effect on the forest stage now loops as intended instead of playing once and going silent.
+  - **Stage Effects Volume On Load** ([#16](https://github.com/PianoRhythm/pianorhythm/issues/16)) The saved stage-effects volume is now applied on app load instead of reverting to the default.
+  - **Desktop MIDI Output Echo** ([#13](https://github.com/PianoRhythm/pianorhythm/issues/13) / [#18](https://github.com/PianoRhythm/pianorhythm/pull/18)) Desktop no longer echoes MIDI input back out to the same device, fixing double-triggered notes on some hardware.
+  - **Misleading Update Modal** ([#23](https://github.com/PianoRhythm/pianorhythm/issues/23)) When a same-version build is published with a new date, the update modal now shows the current version with the new build date instead of a fake next-version number.
+  - **Soundfont Download Timeout** ([#30](https://github.com/PianoRhythm/pianorhythm/issues/30)) The room-load timeout no longer fires while a slow soundfont is still downloading, so users on slower connections can finish loading.
+  - **Web Update Notification** ([#31](https://github.com/PianoRhythm/pianorhythm/issues/31)) The "check for updates" flow on the web client now correctly surfaces the update notification.
+  - **Rendering Issue** ([#35](https://github.com/PianoRhythm/pianorhythm/issues/35), [#37](https://github.com/PianoRhythm/pianorhythm/issues/37)) Fixed a visual/rendering regression affecting some stages.
+  - **Note Desync & Stuck Notes** Fixed a note desync issue and a related note-off bug that could leave notes hanging.
+  - **FPS Regression** Restored FPS in certain scenes that had regressed after renderer changes.
+
+<!----------------------------------------------->
 ## 0.9.9 (2024-05-07)
 
 #### :rocket: New Features

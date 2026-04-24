@@ -1,8 +1,8 @@
 ---
 slug: back-from-hiatus
-title: I'm Back! PianoRhythm v0.10.0 Coming Soon
+title: I'm Back! PianoRhythm v0.9.10 Coming Soon
 authors: [oak]
-tags: [oak, pianorhythm, hiatus, v0.10.0, comeback, staging]
+tags: [oak, pianorhythm, hiatus, v0.9.10, comeback, staging]
 ---
 
 Hey everyone! Oak here, and I'm excited to announce that I'm back to actively working on PianoRhythm after several months of hiatus.
@@ -17,19 +17,20 @@ Life has a way of throwing curveballs, and the past several months have been no 
 
 I know this might have been frustrating for some of you who were eagerly waiting for updates, and I truly appreciate your patience and continued support during this time. The PianoRhythm community has always been incredible, and knowing that you've stuck around means the world to me.
 
-## What's Coming: v0.10.0
+## What's Coming: v0.9.10
 
-I'm thrilled to share that I'm back in full development mode, and I have some exciting news: **PianoRhythm v0.10.0 is planned for release around September 2025!**
+I'm thrilled to share that I'm back in full development mode, and I have some exciting news: **PianoRhythm v0.9.10 is planned for release on April 27, 2026!**
 
-This upcoming version represents a significant milestone in PianoRhythm's journey. While I can't reveal all the details just yet, I can tell you that v0.10.0 will include:
+This upcoming version represents a significant milestone in PianoRhythm's journey. Here's a taste of what's landing in v0.9.10:
 
-- (Potential) Performance improvements (new graphics engine) and bug fixes
-- Continued refinements to the audio engine
-- UI/UX improvements
-- Dedicated page for the sheet music repository
-- And more!
+- A new **in-app HelpBot** that can walk you through the app and even open the right settings panel for you
+- A **new sound engine** with richer chorus and reverb, plus **low-latency audio (AudioWorklet) enabled by default** for less delay between key press and sound
+- A **faster, smoother startup** that tells you exactly what it's doing — and what failed if something goes wrong
+- A dedicated **soundfont browser**, a polished "New Room" modal, and **MIDI settings broken out** into their own section so they're easier to find
+- An **updated desktop app** on the latest stable Tauri release, with **smaller, faster downloads**
+- A long list of **bug fixes**: pitch-bend broadcasts, the forest stage's rain loop, stage-effects volume on load, desktop MIDI echo, stuck notes, and more
 
-I'll be sharing more specific details about the features and improvements as we get closer to the release date.
+Full release notes will go up alongside the build — check the [Changelog](/changelog) for the complete list once it's out.
 
 ## Check Out the Staging Site
 
@@ -49,7 +50,7 @@ Before I wrap up, I want to give a huge thank you to everyone who has continued 
 
 PianoRhythm has always been a passion project, and seeing how much it means to the community makes all the hard work worthwhile.
 
-Stay tuned for more updates as we approach the v0.10.0 release. I'm excited to share this journey with all of you!
+Stay tuned for more updates as we approach the v0.9.10 release. I'm excited to share this journey with all of you!
 
 As always, you can reach me at:
 - Email: oak@pianorhythm.io
