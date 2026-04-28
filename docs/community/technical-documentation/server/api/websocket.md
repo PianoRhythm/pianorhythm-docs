@@ -23,32 +23,31 @@ The PianoRhythm WebSocket API enables real-time, bidirectional communication bet
 
 ### WebSocket Endpoint
 ```
-wss://api.pianorhythm.io/api/websocket/{encrypted_payload}
+wss://api.pianorhythm.io/api/websocket
 ```
 
-### Encrypted Payload
-The connection requires an encrypted payload containing user authentication data:
+### Authentication
+The WebSocket handshake is authenticated by the same JWT used for the REST API. The
+client must already hold a valid access token cookie (obtained via `/login`,
+`/register`, or `/oauth2/discord`); the browser attaches it automatically on
+upgrade. Native clients may instead send the token via the `Authorization: Bearer
+<token>` header.
 
 ```javascript
-const payload = {
-  username: "user123",
-  uuid: "user-uuid-here",
-  socket_id: "unique-socket-id",
-  is_member: true,
-  token: "jwt-token-here"
-};
-
-const encryptedPayload = encrypt(JSON.stringify(payload));
-const ws = new WebSocket(`wss://api.pianorhythm.io/api/websocket/${encryptedPayload}`);
+// Browser — cookies set by /login flow are sent automatically.
+const ws = new WebSocket('wss://api.pianorhythm.io/api/websocket');
 ```
 
+The server derives `uuid`, `username`, `usertag`, and role membership directly
+from the token claims, and mints a fresh `socket_id` for each connection. The
+generated `socket_id` is returned to the client in the welcome message.
+
 ### Connection Lifecycle
-1. **WebSocket Handshake** - HTTP upgrade to WebSocket
-2. **Payload Decryption** - Server decrypts authentication data
-3. **User Authentication** - JWT token validation
-4. **Session Initialization** - User session created
-5. **Welcome Message** - Server sends user data
-6. **Ready State** - Connection ready for messages
+1. **WebSocket Handshake** - HTTP upgrade to WebSocket (JWT cookie/header attached)
+2. **Token Verification** - Server validates the Ed25519-signed access token
+3. **Session Initialization** - User session created with a freshly generated `socket_id`
+4. **Welcome Message** - Server sends user data including the `socket_id`
+5. **Ready State** - Connection ready for messages
 
 ## 📨 Message Protocol
 

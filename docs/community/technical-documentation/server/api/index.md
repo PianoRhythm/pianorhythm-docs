@@ -150,8 +150,13 @@ X-RateLimit-Reset: 1640995200
 ## 🔄 WebSocket API
 
 ### Connection Establishment
+The WebSocket handshake is authenticated with the same JWT used for the REST API.
+The browser automatically attaches the access token cookie set by `/login` (or
+`/register` / `/oauth2/discord`); native clients can use `Authorization: Bearer
+<token>` instead.
+
 ```javascript
-const ws = new WebSocket('wss://api.pianorhythm.io/api/websocket/{encrypted_payload}');
+const ws = new WebSocket('wss://api.pianorhythm.io/api/websocket');
 ```
 
 ### Message Format
