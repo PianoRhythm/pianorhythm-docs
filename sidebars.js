@@ -44,6 +44,7 @@ module.exports = {
           label: 'MIDI Player',
           link: { type: 'doc', id: 'guides/midi-player/midi-player' },
           items: [
+            'guides/midi-player/midi-repo',
             'guides/midi-player/vp-sequencer',
           ]
         },
